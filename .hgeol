@@ -1,0 +1,15 @@
+# ************************************************************
+# EOL Configuration
+# ************************************************************
+[patterns]
+**.cmake        = native
+**.cpp          = native
+**.h            = native
+**.json         = native
+**.material     = native
+**.txt          = native
+**.xml          = native
+**.user         = CRLF
+
+[repository]
+native = LF

@@ -1,0 +1,8 @@
+<RCC>
+  <qresource prefix="images/media">
+    <file alias="start">../../../../../Data/Assets/Images/player-time-start.png</file>
+    <file alias="forward">../../../../../Data/Assets/Images/media-skip-forward-8.png</file>
+    <file alias="stop">../../../../../Data/Assets/Images/player-time-stop.png</file>
+    <file alias="reset">../../../../../Data/Assets/Images/media-seek-backward-8.png</file>
+  </qresource>
+</RCC>

@@ -30,11 +30,21 @@ namespace ndx {
 // Class Implementations
 // ************************************************************
 Application::Application(int& argc, char** argv) : QApplication(argc, argv) {
+    QDir dir(QDir::current());
+    if(!dir.exists("Logs")) {
+        dir.mkdir("Logs");
+    }
+
     mMainWindow = nullptr;
+
+    // Setup logger system.
+    mLogManager = std::make_shared<LogManager>(true);
+    mLogManager->createLogger("", "Logs/ModuleAlgorithm.log", true, Poco::Message::PRIO_TRACE);
 }
 
 
 Application::~Application() {
+    mLogManager.reset();
 }
 
 
@@ -73,12 +83,18 @@ void Application::shutDown() {
 
 
 bool Application::startUp() {
-    if(!setupGuis())		{ return false; }
-    if(!setupConnections()) { return false; }
-    if(!setupFinalSteps())	{ return false; }
-        
+    if(!setupGuis()) {
+        return false;
+    }
+    if(!setupConnections()) {
+        return false;
+    }
+    if(!setupFinalSteps()) {
+        return false;
+    }
+
     return true;
 }
 
 
-} // End namespace ndx
+}  // End namespace ndx

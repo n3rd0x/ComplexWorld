@@ -25,7 +25,7 @@
 #include "ndxNumberGenerator.h"
 
 // Qt includes
-#include<QtGui>
+#include <QtGui>
 
 
 namespace ndx {
@@ -66,10 +66,10 @@ void BubbleSort::generateData() {
     QFont font;
     font.setPointSize(14);
     for(int i = 0; i < num; i++) {
-        QString value = QString::number(mNumGenerator->generate());
+        QString value = QString::number((int)mNumGenerator->generate());
         QLabel* label = new QLabel(value, mViewGroupBox);
         label->setFont(font);
-        mViewDataSet.push_back(label);  
+        mViewDataSet.push_back(label);
 
         mViewGridLayout->addWidget(label, row, col, 1, 1, Qt::AlignCenter);
         nextInteration(row, col);
@@ -97,7 +97,8 @@ QLabel* BubbleSort::getItem(const int idx) {
     int row = 0;
     int col = 0;
     getDataSetIndex(idx, row, col);
-    return dynamic_cast<QLabel*>(mViewGridLayout->itemAtPosition(row, col)->widget());
+    return dynamic_cast<QLabel*>(
+        mViewGridLayout->itemAtPosition(row, col)->widget());
 }
 
 
@@ -129,7 +130,8 @@ void BubbleSort::sort() {
     }
 
     // Skip when we want to delay.
-    if(mIterator.state == HL_COMPARE_DELAY || mIterator.state == HL_SWITCH_PRE || mIterator.state == HL_SWITCH_POST) {
+    if(mIterator.state == HL_COMPARE_DELAY || mIterator.state == HL_SWITCH_PRE
+       || mIterator.state == HL_SWITCH_POST) {
         if(mIterator.state == HL_COMPARE_DELAY) {
             mIterator.state = HL_COMPARE_CONTINUE;
         }
@@ -144,13 +146,13 @@ void BubbleSort::sort() {
 
     // Initialise if not has started.
     if(!mIterator.started) {
-        mIterator.started   = true;
-        mIterator.si        = mViewDataSet.size() - 1;
-        mIterator.ei        = 0;
-        mIterator.i         = mIterator.si;
-        mIterator.sj        = 0;
-        mIterator.j         = 0;
-        mIterator.state     = HL_COMPARE;
+        mIterator.started = true;
+        mIterator.si      = mViewDataSet.size() - 1;
+        mIterator.ei      = 0;
+        mIterator.i       = mIterator.si;
+        mIterator.sj      = 0;
+        mIterator.j       = 0;
+        mIterator.state   = HL_COMPARE;
     }
 
     // Bubble sort.
@@ -162,33 +164,38 @@ void BubbleSort::sort() {
 
         // First loop, iterate through the whole data set.
         if(mIterator.i > mIterator.ei) {
-            
+
             // Second loop, iterate for comparing the values.
             if(mIterator.j < mIterator.i) {
 
                 QLabel* itemA = getItem(mIterator.j);
                 QLabel* itemB = getItem(mIterator.j + 1);
-                
+
                 // Highlight current items.
                 if(mIterator.state == HL_COMPARE) {
                     visualize(itemA, itemB, HL_COMPARE);
                 }
 
                 // Compare values, then switch if necessary.
-                if(mIterator.state == HL_COMPARE_CONTINUE || mIterator.state == HL_SWITCH_CONTINUE || mIterator.state == HL_SWITCH) {
+                if(mIterator.state == HL_COMPARE_CONTINUE
+                   || mIterator.state == HL_SWITCH_CONTINUE
+                   || mIterator.state == HL_SWITCH) {
                     int valA = getValue(itemA);
                     int valB = getValue(itemB);
                     if(valA > valB) {
-                        if(mIterator.state != HL_SWITCH && mIterator.state != HL_SWITCH_CONTINUE) {
+                        if(mIterator.state != HL_SWITCH
+                           && mIterator.state != HL_SWITCH_CONTINUE) {
                             visualize(itemA, itemB, HL_SWITCH);
                         }
                         else if(mIterator.state == HL_SWITCH_CONTINUE) {
-                            switchData(itemA, mIterator.j, itemB, mIterator.j + 1);
+                            switchData(
+                                itemA, mIterator.j, itemB, mIterator.j + 1);
                             mIterator.state = HL_SWITCH_POST;
                         }
                     }
 
-                    if(mIterator.state != HL_SWITCH_PRE && mIterator.state != HL_SWITCH_POST) {
+                    if(mIterator.state != HL_SWITCH_PRE
+                       && mIterator.state != HL_SWITCH_POST) {
                         visualize(itemA, itemB, HL_DEFAULT);
 
                         // Next iterator.
@@ -219,10 +226,14 @@ void BubbleSort::sort() {
 
 
 void BubbleSort::shutDown() {
-    if(mNumGenerator)   { delete mNumGenerator; }
+    if(mNumGenerator) {
+        delete mNumGenerator;
+    }
     clearDataSet();
-    if(mViewGridLayout) { delete mViewGridLayout; }
-	Plugin::shutDown();
+    if(mViewGridLayout) {
+        delete mViewGridLayout;
+    }
+    Plugin::shutDown();
 }
 
 
@@ -230,23 +241,31 @@ bool BubbleSort::startUp(QWidget* parent) {
     // ************************************************************
     // UI setup
     // ************************************************************
-	Plugin::startUp(parent);
-	setupUi(this);
+    Plugin::startUp(parent);
+    setupUi(this);
 
     QTime time      = QTime::currentTime();
     mNumGenerator   = new NumberGenerator();
     mViewGridLayout = new QGridLayout(mViewGroupBox);
     mNumGenerator->setRange(0, 50);
 
-    mIterator.finished  = false;
-    mIterator.started   = false;
+    mIterator.finished = false;
+    mIterator.started  = false;
 
 
     // ************************************************************
     // Connect
     // ************************************************************
-    connect(mDataButtonGenerate, &QPushButton::clicked, this, &BubbleSort::generateData);
-    connect(mController->mButtonForward, &QPushButton::clicked, this, &BubbleSort::sort);
+    connect(
+        mDataButtonGenerate,
+        &QPushButton::clicked,
+        this,
+        &BubbleSort::generateData);
+    connect(
+        mController->mButtonForward,
+        &QPushButton::clicked,
+        this,
+        &BubbleSort::sort);
     connect(mController->mTimer, &QTimer::timeout, this, &BubbleSort::sort);
 
     return true;
@@ -258,7 +277,8 @@ void BubbleSort::switchData(const int idxA, const int idxB) {
 }
 
 
-void BubbleSort::switchData(QLabel* itemA, const int idxA, QLabel* itemB, const int idxB) {
+void BubbleSort::switchData(
+    QLabel* itemA, const int idxA, QLabel* itemB, const int idxB) {
     // Retrieve indices.
     int rowA, colA, rowB, colB;
     getDataSetIndex(idxA, rowA, colA);
@@ -283,10 +303,16 @@ void BubbleSort::visualize(QLabel* iA, QLabel* iB, const Highlights state) {
         mIterator.state = HL_COMPARE_DELAY;
         break;
     case HL_SWITCH:
-        //iA->setStyleSheet("font-weight: bold; background-color: red; color: white;");
-        //iB->setStyleSheet("font-weight: bold; background-color: blue; color: white;");
-        iA->setStyleSheet("font-weight: bold; font-style: italic; text-decoration: underline; color: red;");
-        iB->setStyleSheet("font-weight: bold; font-style: italic; text-decoration: underline; color: blue;");
+        // iA->setStyleSheet("font-weight: bold; background-color: red; color:
+        // white;");
+        // iB->setStyleSheet("font-weight: bold; background-color: blue; color:
+        // white;");
+        iA->setStyleSheet(
+            "font-weight: bold; font-style: italic; text-decoration: "
+            "underline; color: red;");
+        iB->setStyleSheet(
+            "font-weight: bold; font-style: italic; text-decoration: "
+            "underline; color: blue;");
         mIterator.state = HL_SWITCH_PRE;
         break;
     default:
@@ -297,4 +323,4 @@ void BubbleSort::visualize(QLabel* iA, QLabel* iB, const Highlights state) {
 }
 
 
-} // End namespace ndx
+}  // End namespace ndx

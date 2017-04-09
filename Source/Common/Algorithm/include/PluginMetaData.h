@@ -17,28 +17,21 @@
  */
 
 
-#ifndef _Plugin_h_
-#define _Plugin_h_
+#ifndef _PluginMetaData_h_
+#define _PluginMetaData_h_
 
-
-// Local includes
-#include "PluginMetaData.h"
 
 // Qt includes
 #include <QtCore>
-#include <QtPlugin>
-#include <QtWidgets>
 
 
 namespace ndx {
 
 
 /**
- * Generic plug-in.
+ * Meta data for plugin.
  */
-class Plugin : public QWidget {
-    Q_OBJECT
-
+class PluginMetaData {
 public:
     // ************************************************************
     // Member Declarations
@@ -46,61 +39,53 @@ public:
     /**
      * Default constructor.
      */
-    Plugin();
+    PluginMetaData();
 
 
     /**
-     * Default destructor.
+     * Initialise meta data.
+  * @param meta Meta data to parse.
      */
-    virtual ~Plugin();
+    PluginMetaData(const QJsonObject& meta);
 
 
     /**
-     * @return Meta data.
+     * Copy constructor.
+     * @param cpy MetaData to copy from.
      */
-    const PluginMetaData& getMetaData() const;
+    PluginMetaData(const PluginMetaData& cpy);
 
 
     /**
-     * Set meta data.
-     * @param meta Meta data to set.
+     * Description.
      */
-    void setMetaData(const PluginMetaData& meta);
+    QString mDescription;
 
 
     /**
-     * Shutdown the plug-in.
+     * Long name.
      */
-    virtual void shutDown();
+    QString mName;
 
 
+
+
+    // ************************************************************
+    // Static Member Declarations
+    // ************************************************************
     /**
-     * Start up the plug-in.
-     * @param parent Widget to display into.
-     * @return True on success.
+     * Retrieve value.
+     * @param meta Meta data.
+     * @param keyword Keyword for the meta value.
+     * @return Value of the meta data if exists. Otherwise return "".
      */
-    virtual bool startUp(QWidget* parent);
+    static QString getString(const QJsonObject& meta, const QString& keyword);
 
 
-
-
-protected:
-    /**
-     * Meta data.
-     */
-    PluginMetaData mMetaData;
-
-
-};  // End class Plugin
+};  // End class PluginMetaData
 
 
 }  // End namespace ndx
 
 
-// ************************************************************
-// Plug-in Declarations
-// ************************************************************
-Q_DECLARE_INTERFACE(ndx::Plugin, "ndx.Algorithms.Plugin")
-
-
-#endif  // _Plugin_h_
+#endif  // _PluginMetaData_h_

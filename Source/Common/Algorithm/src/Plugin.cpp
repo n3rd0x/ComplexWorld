@@ -35,27 +35,31 @@ Plugin::~Plugin() {
 }
 
 
-void Plugin::setMetaData(const MetaData& meta) {
-	mMetaData = meta;
+const PluginMetaData& Plugin::getMetaData() const {
+    return mMetaData;
+}
+
+
+void Plugin::setMetaData(const PluginMetaData& meta) {
+    mMetaData = meta;
 }
 
 
 void Plugin::shutDown() {
-	setParent(nullptr);
+    setParent(nullptr);
 }
 
 
 bool Plugin::startUp(QWidget* parent) {
-	setParent(parent);
+    setParent(parent);
 
-	// Set default grid layout if exists.
-	QGridLayout* layout = dynamic_cast<QGridLayout*>(parent->layout());
-	if(layout) {
-		layout->addWidget(this, 0, 0, 1, 1);
-	}
+    // Set default grid layout if exists.
+    QGridLayout* layout = dynamic_cast<QGridLayout*>(parent->layout());
+    if(layout) {
+        layout->addWidget(this, 0, 0, 1, 1);
+    }
     return true;
 }
 
 
-} // End namespace ndx
-
+}  // End namespace ndx

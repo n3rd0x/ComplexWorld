@@ -21,6 +21,7 @@
 #define _ndxPrerequisites_h_
 
 
+// clang-format off
 // ************************************************************
 // Plugin Export Declarations
 // ************************************************************
@@ -77,6 +78,7 @@ namespace ndx {
 
     template<typename T> class Singleton;
 }
+// clang-format on
 
 
 #endif  // _ndxPrerequisites_h_

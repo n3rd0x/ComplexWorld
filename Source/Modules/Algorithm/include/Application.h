@@ -21,13 +21,19 @@
 #define _Application_h_
 
 
+// ndxLib includes
+#include <ndxLogManager.h>
+
+// STL includes
+#include <memory>
+
 // Qt includes
 #include <QApplication>
 
 
 namespace ndx {
 
- 
+
 // ************************************************************
 // Class Forward Declarations
 // ************************************************************
@@ -41,82 +47,88 @@ class Application : public QApplication {
     Q_OBJECT
 
 public:
-	// ************************************************************
-	// Member Declarations
-	// ************************************************************
+    // ************************************************************
+    // Member Declarations
+    // ************************************************************
     /**
      * Default constructor.
-	 * @param argc Number of arguments.
-	 * @param argv List of arguments.
+  * @param argc Number of arguments.
+  * @param argv List of arguments.
      */
-	Application(int& argc, char** argv);
-    
-	
-	/**
-	 * Default destructor.
-	 */
-	~Application();
+    Application(int& argc, char** argv);
 
 
-	/**
-	 * Shutdown the application.
-	 */
+    /**
+     * Default destructor.
+     */
+    ~Application();
+
+
+    /**
+     * Shutdown the application.
+     */
     void shutDown();
 
 
-	/**
-	 * Start up the application.
-	 * @return True on success.
-	 */
+    /**
+     * Start up the application.
+     * @return True on success.
+     */
     bool startUp();
 
 
 
 
 public slots:
-	/**
-	 * Close the application.
-	 */
+    /**
+     * Close the application.
+     */
     void close();
 
 
 
 
 protected:
-	// ************************************************************
-	// Member Declarations
-	// ************************************************************
-	/**
-	 * Setup connections.
-	 * @return True on success.
-	 */
+    // ************************************************************
+    // Member Declarations
+    // ************************************************************
+    /**
+     * Setup connections.
+     * @return True on success.
+     */
     bool setupConnections();
 
 
-	/**
-	 * Setup final step.
-	 * @param True on success.
-	 */
+    /**
+     * Setup final step.
+     * @param True on success.
+     */
     bool setupFinalSteps();
 
 
-	/**
-	 * Setup GUI.
-	 * @param True on success.
-	 */
+    /**
+     * Setup GUI.
+     * @param True on success.
+     */
     bool setupGuis();
 
 
-	/**
-	 * The main window.
-	 */
+    /**
+     * The logging manager.
+     */
+    std::shared_ptr<LogManager> mLogManager;
+
+
+    /**
+     * The main window.
+     */
     MainWindow* mMainWindow;
 
 
-}; // End class Application
+};  // End class Application
 
 
-} // End namespace ndx
+}  // End namespace ndx
 
 
-#endif // _Application_h_
+#endif  // _Application_h_

@@ -36,15 +36,15 @@ namespace ndx {
  */
 class _ndxLibExport NumberGenerator {
 public:
-	// ************************************************************
-	// Member Declarations
-	// ************************************************************
-	/**
-     * Constructor with initialisation of range number.
-     * @param low Low range.
-     * @param high High range.
-	 */
-	NumberGenerator(const double low = 0.0, const double high = 100.0);
+    // ************************************************************
+    // Member Declarations
+    // ************************************************************
+    /**
+        * Constructor with initialisation of range number.
+        * @param low Low range.
+        * @param high High range.
+     */
+    NumberGenerator(const double low = 0.0, const double high = 100.0);
 
 
     /**
@@ -105,11 +105,10 @@ protected:
 
 
 
-}; // End class NumberGenerator
+};  // End class NumberGenerator
 
 
-} // End namespace ndx
+}  // End namespace ndx
 
 
-#endif // _ndxNumberGenerator_h_
-
+#endif  // _ndxNumberGenerator_h_

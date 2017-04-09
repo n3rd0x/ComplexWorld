@@ -43,8 +43,9 @@ public:
     // ************************************************************
     /**
      * Default constructor.
+     * @param enablePrefix Flag for enable prefix in the logging message.
      */
-    LogManager();
+    LogManager(const bool enablePrefix = false);
 
 
     /**
@@ -57,7 +58,6 @@ public:
      * Create an independent logger.
      * @param id ID to identify the logger.
      * @param fName File name.
-     * @param timestamp Enable timestamp.
      * @param level Set logging level.
      * @return A Poco::Logger object.
      */
@@ -65,7 +65,6 @@ public:
         const std::string& id,
         const std::string& fName,
         const bool consoleOutput            = false,
-        const bool timestamp                = false,
         const Poco::Message::Priority level = Poco::Message::PRIO_INFORMATION);
 
 
@@ -120,7 +119,7 @@ public:
 
 
 
-    
+
 protected:
     // ************************************************************
     // Member Declarations
@@ -142,15 +141,9 @@ protected:
 
 
     /**
-     * Flag for using prefix.
+     * Enable prefix name in the logging message.
      */
     bool mPrefixEnabled;
-
-
-    /**
-     * Flag for using unique file.
-     */
-    bool mUniqueFile;
 
 
 };  // End class LogManager
@@ -162,25 +155,39 @@ protected:
 // Macro Definition Declarations
 // ************************************************************
 // clang-format off
-//#define LOG_MANAGER Augmenti::Part::LogManager::getSingletonPtr()
-//#define LOG_CRITICAL_LEVEL(msg)                         LOG_MANAGER->logCritical(msg);
-//#define LOG_CRITICAL_LEVEL_PREFIX(msg, prefix)          LOG_MANAGER->logCritical(msg, prefix);
-//#define LOG_NORMAL_LEVEL(msg)                           LOG_MANAGER->logNormal(msg);
-//#define LOG_NORMAL_LEVEL_PREFIX(msg, prefix)            LOG_MANAGER->logNormal(msg, prefix);
-//#define LOG_TRIVIAL_LEVEL(msg)                          LOG_MANAGER->logTrivial(msg);
-//#define LOG_TRIVIAL_LEVEL_PREFIX(msg, prefix)           LOG_MANAGER->logTrivial(msg, prefix);
-//#define LOG_MESSAGE_CRITICAL(log, msg)                  LOG_MANAGER->logCritical(log, msg);
-//#define LOG_MESSAGE_CRITICAL_PREFIX(log, msg, prefix)   LOG_MANAGER->logCritical(log, msg, prefix);
-//#define LOG_MESSAGE_NORMAL(log, msg)                    LOG_MANAGER->logNormal(log, msg);
-//#define LOG_MESSAGE_NORMAL_PREFIX(log, msg, prefix)     LOG_MANAGER->logNormal(log, msg, prefix);
-//#define LOG_MESSAGE_TRIVIAL(log, msg)                   LOG_MANAGER->logTrivial(log, msg);
-//#define LOG_MESSAGE_TRIVIAL_PREFIX(log, msg, prefix)    LOG_MANAGER->logTrivial(log, msg, prefix);
-//#define LOG_OGRE_CRITICAL(msg)                          LOG_MANAGER->logCriticalOgre(msg);
-//#define LOG_OGRE_CRITICAL_PREFIX(msg, prefix)           LOG_MANAGER->logCriticalOgre(msg, prefix);
-//#define LOG_OGRE_NORMAL(msg)                            LOG_MANAGER->logNormalOgre(msg);
-//#define LOG_OGRE_NORMAL_PREFIX(msg, prefix)             LOG_MANAGER->logNormalOgre(msg, prefix);
-//#define LOG_OGRE_TRIVIAL(msg)                           LOG_MANAGER->logTrivialOgre(msg);
-//#define LOG_OGRE_TRIVIAL_PREFIX(msg, prefix)            LOG_MANAGER->logTrivialOgre(msg, prefix);
+#define LOG_MANAGER ndx::LogManager::getSingleton()
+#define LOG_CRITICAL_LEVEL(msg)                             LOG_MANAGER->logMessage(msg, Poco::Message::PRIO_CRITICAL);
+#define LOG_CRITICAL_LEVEL_PREFIX(msg, prefix)              LOG_MANAGER->logMessage(msg, Poco::Message::PRIO_CRITICAL, prefix);
+#define LOG_DEBUG_LEVEL(msg)                                LOG_MANAGER->logMessage(msg, Poco::Message::PRIO_DEBUG);
+#define LOG_DEBUG_LEVEL_PREFIX(msg, prefix)                 LOG_MANAGER->logMessage(msg, Poco::Message::PRIO_DEBUG, prefix);
+#define LOG_ERROR_LEVEL(msg)                                LOG_MANAGER->logMessage(msg, Poco::Message::PRIO_ERROR);
+#define LOG_ERROR_LEVEL_PREFIX(msg, prefix)                 LOG_MANAGER->logMessage(msg, Poco::Message::PRIO_ERROR, prefix);
+#define LOG_FATAL_LEVEL(msg)                                LOG_MANAGER->logMessage(msg, Poco::Message::PRIO_FATAL);
+#define LOG_FATAL_LEVEL_PREFIX(msg, prefix)                 LOG_MANAGER->logMessage(msg, Poco::Message::PRIO_FATAL, prefix);
+#define LOG_INFO_LEVEL(msg)                                 LOG_MANAGER->logMessage(msg, Poco::Message::PRIO_INFORMATION);
+#define LOG_INFO_LEVEL_PREFIX(msg, prefix)                  LOG_MANAGER->logMessage(msg, Poco::Message::PRIO_INFORMATION, prefix);
+#define LOG_NOTICE_LEVEL(msg)                               LOG_MANAGER->logMessage(msg, Poco::Message::PRIO_NOTICE);
+#define LOG_NOTICE_LEVEL_PREFIX(msg, prefix)                LOG_MANAGER->logMessage(msg, Poco::Message::PRIO_NOTICE, prefix);
+#define LOG_TRACE_LEVEL(msg)                                LOG_MANAGER->logMessage(msg, Poco::Message::PRIO_TRACE);
+#define LOG_TRACE_LEVEL_PREFIX(msg, prefix)                 LOG_MANAGER->logMessage(msg, Poco::Message::PRIO_TRACE, prefix);
+#define LOG_WARNING_LEVEL(msg)                              LOG_MANAGER->logMessage(msg, Poco::Message::PRIO_WARNING);
+#define LOG_WARNING_LEVEL_PREFIX(msg, prefix)               LOG_MANAGER->logMessage(msg, Poco::Message::PRIO_WARNING, prefix);
+#define LOG_MESSAGE_CRITICAL(logger, msg)                   LOG_MANAGER->logMessage(logger, msg, Poco::Message::PRIO_CRITICAL);
+#define LOG_MESSAGE_CRITICAL_PREFIX(logger, msg, prefix)    LOG_MANAGER->logMessage(logger, msg, Poco::Message::PRIO_CRITICAL, prefix);
+#define LOG_MESSAGE_DEBUG(logger, msg)                      LOG_MANAGER->logMessage(logger, msg, Poco::Message::PRIO_DEBUG);
+#define LOG_MESSAGE_DEBUG_PREFIX(logger, msg, prefix)       LOG_MANAGER->logMessage(logger, msg, Poco::Message::PRIO_DEBUG, prefix);
+#define LOG_MESSAGE_ERROR(logger, msg)                      LOG_MANAGER->logMessage(logger, msg, Poco::Message::PRIO_ERROR);
+#define LOG_MESSAGE_ERROR_PREFIX(logger, msg, prefix)       LOG_MANAGER->logMessage(logger, msg, Poco::Message::PRIO_ERROR, prefix);
+#define LOG_MESSAGE_FATAL(logger, msg)                      LOG_MANAGER->logMessage(logger, msg, Poco::Message::PRIO_FATAL);
+#define LOG_MESSAGE_FATAL_PREFIX(logger, msg, prefix)       LOG_MANAGER->logMessage(logger, msg, Poco::Message::PRIO_FATAL, prefix);
+#define LOG_MESSAGE_INFO(logger, msg)                       LOG_MANAGER->logMessage(logger, msg, Poco::Message::PRIO_INFORMATION);
+#define LOG_MESSAGE_INFO_PREFIX(logger, msg, prefix)        LOG_MANAGER->logMessage(logger, msg, Poco::Message::PRIO_INFORMATION, prefix);
+#define LOG_MESSAGE_NOTICE(logger, msg)                     LOG_MANAGER->logMessage(logger, msg, Poco::Message::PRIO_NOTICE);
+#define LOG_MESSAGE_NOTICE_PREFIX(logger, msg, prefix)      LOG_MANAGER->logMessage(logger, msg, Poco::Message::PRIO_NOTICE, prefix);
+#define LOG_MESSAGE_TRACE(logger, msg)                      LOG_MANAGER->logMessage(logger, msg, Poco::Message::PRIO_TRACE);
+#define LOG_MESSAGE_TRACE_PREFIX(logger, msg, prefix)       LOG_MANAGER->logMessage(logger, msg, Poco::Message::PRIO_TRACE, prefix);
+#define LOG_MESSAGE_WARNING(logger, msg)                    LOG_MANAGER->logMessage(logger, msg, Poco::Message::PRIO_WARNING);
+#define LOG_MESSAGE_WARNING_PREFIX(logger, msg, prefix)     LOG_MANAGER->logMessage(logger, msg, Poco::Message::PRIO_WARNING, prefix);
 // clang-format on
 
 
@@ -188,4 +195,3 @@ protected:
 
 
 #endif  // _ndxLogManager_h_
-

@@ -22,17 +22,17 @@
 
 
 // Qt includes
-#include <QtCore>
 #include <QPluginLoader>
+#include <QtCore>
 
 
 namespace ndx {
 
- 
+
 // ************************************************************
 // Class Forward Declarations
 // ************************************************************
-class MetaData;
+class PluginMetaData;
 class Plugin;
 
 
@@ -40,107 +40,112 @@ class Plugin;
  * Plug-in manager.
  */
 class PluginManager : public QObject {
-	Q_OBJECT
-    
+    Q_OBJECT
+
 public:
-	// ************************************************************
-	// Structure Declarations
-	// ************************************************************
-	/**
-	 * Current loaded plug-in.
-	 */
-	struct PluginPair {
-		/**
-		 * Plug-in loader.
-		 */
-		QPluginLoader* mLoader;
+    // ************************************************************
+    // Structure Declarations
+    // ************************************************************
+    /**
+     * Current loaded plug-in.
+     */
+    struct PluginPair {
+        /**
+         * Plug-in loader.
+         */
+        QPluginLoader* mLoader;
 
 
-		/**
-		 * Current plug-in.
-		 */
-		Plugin* mPlugin;
-	} mCurrentPlugin;
+        /**
+         * Current plug-in.
+         */
+        Plugin* mPlugin;
+    } mCurrentPlugin;
 
 
 
 
-	// ************************************************************
-	// Member Declarations
-	// ************************************************************
+    // ************************************************************
+    // Member Declarations
+    // ************************************************************
     /**
      * Default constructor.
      */
-	PluginManager();
-    
-	
-	/**
-	 * Default destructor.
-	 */
-	~PluginManager();
+    PluginManager();
 
 
-	/**
-	 * Load plug-in.
-	 * @param widget Widget to display into.
-	 * @param name Name of the plug-ins to load.
-	 * @return True if succeeded loaded.
-	 */
-	bool load(QWidget* widget, const QString& name);
+    /**
+     * Default destructor.
+     */
+    ~PluginManager();
 
 
-	/**
-	 * Scan for plug-ins.
-	 * @param Path to scan.
-	 * @return True if there's some plug-in to load..
-	 */
-	bool scan(const QString& path);
+    /**
+     * @return Name of the current loaded plug-in.
+     */
+    QString getCurrentLoaded() const;
 
 
-	/**
-	 * Unload the plug-in.
-	 */
-	void unload();
+    /**
+     * Load plug-in.
+     * @param widget Widget to display into.
+     * @param name Name of the plug-ins to load.
+     * @return True if succeeded loaded.
+     */
+    bool load(QWidget* widget, const QString& name);
+
+
+    /**
+     * Scan for plug-ins.
+     * @param Path to scan.
+     * @return True if there's some plug-in to load..
+     */
+    bool scan(const QString& path);
+
+
+    /**
+     * Unload the plug-in.
+     */
+    void unload();
 
 
 
 
 private:
-	/**
-	 * List of plug-ins.
-	 */
-	QHash<QString, QPluginLoader*> mPlugins;
+    /**
+     * List of plug-ins.
+     */
+    QHash<QString, QPluginLoader*> mPlugins;
 
 
 
 
 signals:
-	/**
-	 * Signal to populate scanned plug-in.
-	 * @param metaData Meta data of the plug-in.
-	 */
-	void signalToPopulatePlugin(const MetaData& metaData);
+    /**
+     * Signal to populate scanned plug-in.
+     * @param metaData Meta data of the plug-in.
+     */
+    void sPopulatePlugin(const PluginMetaData& metaData);
 
 
-	/**
-	 * Signal that current plug-in has been removed.
-	 * @param name Name of the plug-in.
-	 */
-	void signalToRemovePlugin(const QString& name);
+    /**
+     * Signal that current plug-in has been removed.
+     * @param name Name of the plug-in.
+     */
+    void sRemovePlugin(const QString& name);
 
 
     /**
      * Signal to sort the list.
      * @param state State for sorting.
      */
-    void signalToSort(const bool state);
+    void sSortPlugin(const bool state);
 
 
-}; // End class PluginManager
+};  // End class PluginManager
 
 
-} // End namespace ndx
+}  // End namespace ndx
 
 
-#endif // _PluginManager_h_
-
+#endif  // _PluginManager_h_

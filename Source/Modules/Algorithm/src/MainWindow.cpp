@@ -20,7 +20,7 @@
 // Local includes
 #include "MainWindow.h"
 #include "PluginManager.h"
-#include "MetaData.h"
+#include "PluginMetaData.h"
 #include "ndxMacros.h"
 
 
@@ -28,9 +28,29 @@ namespace ndx {
 
 
 // ************************************************************
+// Static Member Implementations
+// ************************************************************
+QFont MainWindow::setFont(QListWidgetItem* item, bool highlight) {
+    QFont font("Calibri", 10);
+    QColor colour(0, 0, 0);
+    if(highlight) {
+        font.setBold(true);
+        colour = QColor(0, 0, 255);
+    }
+
+    item->setTextColor(colour);
+    item->setFont(font);
+    return font;
+}
+
+
+
+
+// ************************************************************
 // Class Implementations
 // ************************************************************
-MainWindow::MainWindow(QWidget* parent, Qt::WindowFlags flags) : QMainWindow(parent, flags) {
+MainWindow::MainWindow(QWidget* parent, Qt::WindowFlags flags)
+: QMainWindow(parent, flags) {
     initValues();
     initPointers();
     setupObjects();
@@ -40,21 +60,21 @@ MainWindow::MainWindow(QWidget* parent, Qt::WindowFlags flags) : QMainWindow(par
 
 
 MainWindow::~MainWindow() {
-	SAFE_CLEAN_POINTER(mPluginManager);
+    SAFE_CLEAN_POINTER(mPluginManager);
 }
 
 
 void MainWindow::initPointers() {
-	mPluginManager	= nullptr;
+    mPluginManager = nullptr;
 }
 
 
-void MainWindow::initValues() { 
+void MainWindow::initValues() {
 }
 
 
 bool MainWindow::setup(const QString& pDir) {
-	mPluginManager->scan(pDir);
+    mPluginManager->scan(pDir);
     return true;
 }
 
@@ -69,30 +89,65 @@ bool MainWindow::setupConnections() {
     // Load sample.
     connect(mSampleButtonLoad, SIGNAL(clicked()), this, SLOT(loadPlugin()));
 
+    // Check sample by clicking on the list element.
+    connect(
+        mSampleList,
+        SIGNAL(itemClicked(QListWidgetItem*)),
+        this,
+        SLOT(checkPlugin(QListWidgetItem*)));
+
     // Load sample by click on the list.
-    connect(mSampleList, SIGNAL(itemDoubleClicked(QListWidgetItem*)), this, SLOT(loadPlugin(QListWidgetItem*)));
+    connect(
+        mSampleList,
+        SIGNAL(itemDoubleClicked(QListWidgetItem*)),
+        this,
+        SLOT(loadPlugin(QListWidgetItem*)));
 
     // Unload sample.
-    connect(mSampleButtonUnload, &QPushButton::clicked, this, &MainWindow::unloadPlugin);
+    connect(
+        mSampleButtonUnload,
+        &QPushButton::clicked,
+        this,
+        &MainWindow::unloadPlugin);
 
     // Populate samples.
-    connect(mPluginManager, &PluginManager::signalToPopulatePlugin, this, &MainWindow::populatePlugin);
+    connect(
+        mPluginManager,
+        &PluginManager::sPopulatePlugin,
+        this,
+        &MainWindow::populatePlugin);
 
     // Sort sample list.
-    connect(mPluginManager, &PluginManager::signalToSort, this, &MainWindow::sortSampleList);
+    connect(
+        mPluginManager,
+        &PluginManager::sSortPlugin,
+        this,
+        &MainWindow::sortSampleList);
 
     // Remove plug-in from the list.
-    connect(mPluginManager, &PluginManager::signalToRemovePlugin, this, &MainWindow::removePlugin);
+    connect(
+        mPluginManager,
+        &PluginManager::sRemovePlugin,
+        this,
+        &MainWindow::removePlugin);
 
     // Connect between dock widget.
-    connect(mSampleDock, &QDockWidget::visibilityChanged, mActionShowSampleList, &QAction::setChecked);
-    connect(mActionShowSampleList, &QAction::triggered, mSampleDock, &QDockWidget::setVisible);
+    connect(
+        mSampleDock,
+        &QDockWidget::visibilityChanged,
+        mActionShowSampleList,
+        &QAction::setChecked);
+    connect(
+        mActionShowSampleList,
+        &QAction::triggered,
+        mSampleDock,
+        &QDockWidget::setVisible);
 
     return true;
 }
 
 
-bool MainWindow::setupDefaultSettings() {        
+bool MainWindow::setupDefaultSettings() {
     toggleLoadAndUnloadButtons(true);
     return true;
 }
@@ -102,10 +157,9 @@ bool MainWindow::setupObjects() {
     // Setup objects from the UI form.
     setupUi(this);
 
-	mPluginManager	= new PluginManager();
+    mPluginManager = new PluginManager();
     return true;
 }
 
 
-} // End namespace ndx
-
+}  // End namespace ndx

@@ -19,8 +19,8 @@
 
 // Local includes
 #include "MainWindow.h"
-#include "MetaData.h"
 #include "PluginManager.h"
+#include "PluginMetaData.h"
 
 // Qt includes
 #include <QtGui>
@@ -32,6 +32,11 @@ namespace ndx {
 // ************************************************************
 // Class Implementations
 // ************************************************************
+void MainWindow::checkPlugin(QListWidgetItem* item) {
+    mStatusBar->showMessage(item->toolTip(), 2000);
+}
+
+
 void MainWindow::loadPlugin() {
     // Retrieve selected item.
     QListWidgetItem* item = mSampleList->currentItem();
@@ -47,38 +52,36 @@ void MainWindow::loadPlugin(QListWidgetItem* item) {
 
     // Set color to blue if succeeded to load the plug-in.
     if(item) {
-        QBrush sBrush(QColor(0, 0, 255, 255));
-        sBrush.setStyle(Qt::SolidPattern);
+        // Find current loaded plug-in.
+        auto curPlugin = mPluginManager->getCurrentLoaded();
         if(mPluginManager->load(mCentralWidget, item->text())) {
             // Set default color of the previous plug-in.
-            QList<QListWidgetItem*> items = mSampleList->findItems(mCurrentPlugin, Qt::MatchExactly);
-            QBrush dBrush(QColor(0, 0, 0, 255));
-            dBrush.setStyle(Qt::SolidPattern);
-            item->setForeground(dBrush);
+            auto items = mSampleList->findItems(curPlugin, Qt::MatchExactly);
             for(auto itr : items) {
-                itr->setForeground(dBrush);
+                setFont(itr, false);
             }
 
-            item->setForeground(sBrush);
+            setFont(item, true);
             mCurrentPlugin = item->text();
 
             toggleLoadAndUnloadButtons(false);
-            mStatusBar->showMessage(item->text() + " - " + item->toolTip());
+            mStatusBar->showMessage(item->text() + " - " + item->toolTip(), 2000);
         }
     }
 }
 
-	
-void MainWindow::populatePlugin(const MetaData& meta) {
+
+void MainWindow::populatePlugin(const PluginMetaData& meta) {
     QListWidgetItem* item = new QListWidgetItem(mSampleList);
     item->setText(meta.mName);
     item->setToolTip(meta.mDescription);
     item->setStatusTip(meta.mDescription);
+    setFont(item, false);
 }
 
 
 void MainWindow::removePlugin(const QString& name) {
-    QList<QListWidgetItem*> items = mSampleList->findItems(name, Qt::MatchExactly);
+    auto items = mSampleList->findItems(name, Qt::MatchExactly);
     if(items.size() > 0) {
         mSampleList->removeItemWidget(items[0]);
     }
@@ -97,22 +100,18 @@ void MainWindow::toggleLoadAndUnloadButtons(const bool state) {
 
 
 void MainWindow::unloadPlugin() {
-    // Retrieve selected item.
-    QListWidgetItem* item = mSampleList->currentItem();
-
-    // Set to default color.
-    if(item) {
-        QBrush brush(QColor(0, 0, 0, 255));
-        brush.setStyle(Qt::SolidPattern);
-        item->setForeground(brush);
-
-        mPluginManager->unload();
-        toggleLoadAndUnloadButtons(true);
-
-        mCurrentPlugin = "";
-        mStatusBar->clearMessage();
+    auto curPlugin = mPluginManager->getCurrentLoaded();
+    auto items = mSampleList->findItems(curPlugin, Qt::MatchExactly);
+    for(auto itr : items) {
+        setFont(itr, false);
     }
+
+    mPluginManager->unload();
+    toggleLoadAndUnloadButtons(true);
+
+    mCurrentPlugin = "";
+    mStatusBar->clearMessage();
 }
 
 
-} // End namespace ndx
+}  // End namespace ndx

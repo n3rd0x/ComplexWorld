@@ -18,7 +18,7 @@
 
 
 // Local includes
-#include "MetaData.h"
+#include "PluginMetaData.h"
 
 
 namespace ndx {
@@ -27,43 +27,37 @@ namespace ndx {
 // ************************************************************
 // Class Implementations
 // ************************************************************
-MetaData::MetaData() {
-	mDescription = "";
-	mName        = "";
+PluginMetaData::PluginMetaData() {
+    mDescription = "";
+    mName        = "";
 }
 
 
-MetaData::MetaData(const QJsonObject& meta) {
-	if(!meta.isEmpty()) {
-		const QJsonObject& data = meta.value("MetaData").toObject();
-		if(!data.isEmpty()) {
-			mDescription = getString(data, "Description");
-			mName        = getString(data, "Name");
-		}
-	}
+PluginMetaData::PluginMetaData(const QJsonObject& meta) {
+    if(!meta.isEmpty()) {
+        const QJsonObject& data = meta.value("MetaData").toObject();
+        if(!data.isEmpty()) {
+            mDescription = getString(data, "Description");
+            mName        = getString(data, "Name");
+        }
+    }
 }
 
 
-MetaData::MetaData(const MetaData& cpy) {
-	mDescription = cpy.mDescription;
-	mName        = cpy.mName;
+PluginMetaData::PluginMetaData(const PluginMetaData& cpy) {
+    mDescription = cpy.mDescription;
+    mName        = cpy.mName;
 }
 
 
-MetaData::MetaData(MetaData&& mv) {
-	mDescription = std::move(mDescription);
-	mName        = std::move(mName);
+QString PluginMetaData::getString(
+    const QJsonObject& meta, const QString& keyword) {
+    const QJsonValue& value = meta.value(keyword);
+    if(value.isString()) {
+        return value.toString();
+    }
+    return QString("");
 }
 
 
-QString MetaData::getString(const QJsonObject& meta, const QString& keyword) {
-	const QJsonValue& value = meta.value(keyword);
-	if(value.isString()) {
-		return value.toString();
-	}
-	return QString("");
-}
-
-
-} // End namespace ndx
-
+}  // End namespace ndx

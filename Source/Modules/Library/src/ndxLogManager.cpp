@@ -23,14 +23,14 @@
 // POCO includes
 #include <Poco/AutoPtr.h>
 #include <Poco/ConsoleChannel.h>
-#include <Poco/FormattingChannel.h>
 #include <Poco/FileChannel.h>
+#include <Poco/FormattingChannel.h>
 #include <Poco/PatternFormatter.h>
 #include <Poco/SplitterChannel.h>
 #if _WIN32
-    #include <Poco/Version.h>
+#include <Poco/Version.h>
 #else
-    #include <Poco/Foundation.h>
+#include <Poco/Foundation.h>
 #endif
 
 
@@ -41,7 +41,8 @@ namespace ndx {
 // ************************************************************
 // Static Implementations
 // ************************************************************
-template<> LogManager* Singleton<LogManager>::mSingleton = nullptr;
+template <>
+LogManager* Singleton<LogManager>::mSingleton = nullptr;
 LogManager* LogManager::getSingleton() {
     return mSingleton;
 }
@@ -52,14 +53,13 @@ LogManager* LogManager::getSingleton() {
 // ************************************************************
 // Class Implementations
 // ************************************************************
-LogManager::LogManager() {
+LogManager::LogManager(const bool enablePrefix) : mPrefixEnabled(enablePrefix) {
     mLogger = nullptr;
-    mPrefixEnabled  = false;
 }
 
 
 LogManager::~LogManager() {
-
+    Poco::Logger::shutdown();
 }
 
 
@@ -76,7 +76,6 @@ Poco::Logger* LogManager::createLogger(
     const std::string& id,
     const std::string& fName,
     const bool consoleOutput,
-    const bool timestamp,
     const Poco::Message::Priority level) {
     if(fName.empty()) {
         return nullptr;
@@ -96,20 +95,28 @@ Poco::Logger* LogManager::createLogger(
 #endif
 
     Poco::AutoPtr<Poco::PatternFormatter> pf(new Poco::PatternFormatter());
+    Poco::AutoPtr<Poco::FormattingChannel> pfc(
+        new Poco::FormattingChannel(pf, fc));
     pf->setProperty("pattern", "%Y-%m-%dT%H:%M:%S %t");
 
-    Poco::AutoPtr<Poco::FormattingChannel> pfc(new Poco::FormattingChannel(pf, fc));
-
+    Poco::Logger* logger = &(Poco::Logger::get(id));
     if(consoleOutput) {
         Poco::AutoPtr<Poco::ConsoleChannel> cc(new Poco::ConsoleChannel());
         Poco::AutoPtr<Poco::SplitterChannel> sc(new Poco::SplitterChannel());
         sc->addChannel(cc);
         sc->addChannel(pfc);
-
-        return &(Poco::Logger::create(id, sc, level));
+        logger->setChannel(sc);
     }
-    
-    return &(Poco::Logger::create(id, fc, level));
+    else {
+        logger->setChannel(fc);
+    }
+    logger->setLevel(level);
+
+    // Empty ID means "main" logger, so we save the pointer to the logger.
+    if(id.empty()) {
+        mLogger = logger;
+    }
+    return logger;
 }
 
 
@@ -131,6 +138,8 @@ void LogManager::logMessage(
     const std::string& msg,
     const Poco::Message::Priority level,
     const std::string& prefix) {
+    assert((logger != nullptr) && "Invalid instance of the logger.");
+
     auto mMsg = msg;
     if(mPrefixEnabled && !prefix.empty()) {
         mMsg = applyPrefix(msg, prefix);
@@ -138,7 +147,22 @@ void LogManager::logMessage(
     switch(level) {
     case Poco::Message::Priority::PRIO_CRITICAL:
         logger->critical(mMsg);
-    break;
+        break;
+    case Poco::Message::PRIO_DEBUG:
+        logger->debug(mMsg);
+        break;
+    case Poco::Message::PRIO_ERROR:
+        logger->error(mMsg);
+        break;
+    case Poco::Message::PRIO_FATAL:
+        logger->fatal(mMsg);
+        break;
+    case Poco::Message::PRIO_NOTICE:
+        logger->notice(mMsg);
+        break;
+    case Poco::Message::PRIO_WARNING:
+        logger->warning(mMsg);
+        break;
     default:
         logger->information(mMsg);
     }
@@ -146,17 +170,11 @@ void LogManager::logMessage(
 
 
 void LogManager::removeLogger(const std::string& id) {
-    //if((id == ID_LOGGER_DEFAULT) || (id == ID_LOGGER_OGRE)) {
-    //    return;
-    //}
-
-    //auto itr = mLoggers.find(id);
-    //if(itr != mLoggers.end()) {
-    //    mLogManager->destroyLog(itr->second);
-    //    mLoggers.erase(itr);
-    //}
+    // Remove logger, but the "main" logger.
+    if(!id.empty()) {
+        Poco::Logger::destroy(id);
+    }
 }
 
 
 }  // End namespace ndx
-

@@ -30,7 +30,8 @@ namespace ndx {
 // ************************************************************
 // Static Implementations
 // ************************************************************
-std::default_random_engine NumberGenerator::mGenerator(std::chrono::system_clock::now().time_since_epoch().count());
+std::default_random_engine NumberGenerator::mGenerator(
+    std::chrono::system_clock::now().time_since_epoch().count());
 
 
 double NumberGenerator::generate(const double low, const double high) {
@@ -60,4 +61,4 @@ void NumberGenerator::setRange(const double low, const double high) {
 }
 
 
-} // End namespace ndx
+}  // End namespace ndx

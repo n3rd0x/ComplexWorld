@@ -22,10 +22,10 @@
 
 
 // Qt includes
+#include <QMainWindow>
 #include <QtCore>
 #include <QtGui>
 #include <QtWidgets>
-#include <QMainWindow>
 
 // Local includes
 #include <ui_MainWindow.h>
@@ -37,7 +37,7 @@ namespace ndx {
 // ************************************************************
 // Class Forward Declarations
 // ************************************************************
-class MetaData;
+class PluginMetaData;
 class PluginManager;
 
 
@@ -50,73 +50,73 @@ class MainWindow : public QMainWindow, public Ui::MainWindow {
     Q_OBJECT
 
 public:
-	// ************************************************************
-	// Member Declarations
-	// ************************************************************
-	/**
-	 * Default destructor.
-	 * @param parent Parent of this window.
-	 * @param flags Window flags.
-	 */
+    // ************************************************************
+    // Member Declarations
+    // ************************************************************
+    /**
+     * Default destructor.
+     * @param parent Parent of this window.
+     * @param flags Window flags.
+     */
     MainWindow(QWidget* parent = nullptr, Qt::WindowFlags flags = 0);
-    
-	
-	/**
-	 * Default destructor.
-	 */
-	virtual ~MainWindow();
 
 
-	/**
-	 * Setup the window.
-	 * @param pDir Plug-in directory.
-	 * @return True on success.
-	 */
+    /**
+     * Default destructor.
+     */
+    virtual ~MainWindow();
+
+
+    /**
+     * Setup the window.
+     * @param pDir Plug-in directory.
+     * @return True on success.
+     */
     bool setup(const QString& pDir);
 
 
 
 
 signals:
-	/**
-	 * Signal to close.
-	 */
+    /**
+     * Signal to close.
+     */
     void signalToClose();
 
 
 
 
 protected:
-	/**
-	 * Initialise pointers.
-	 */
+    /**
+     * Initialise pointers.
+     */
     void initPointers();
 
 
-	/**
-	 * Initialise values.
-	 */
+    /**
+     * Initialise values.
+     */
     void initValues();
 
 
-	/**
-	 * Setup connections.
-	 * @return True on success.
-	 */
+    /**
+     * Setup connections.
+     * @return True on success.
+     */
     bool setupConnections();
 
 
-	/**
-	 * Setup default settings.
-	 * @return True on success.
-	 */
+    /**
+     * Setup default settings.
+     * @return True on success.
+     */
     bool setupDefaultSettings();
 
 
-	/**
-	 * Setup objects.
-	 * @return True on success.
-	 */
+    /**
+     * Setup objects.
+     * @return True on success.
+     */
     bool setupObjects();
 
 
@@ -126,19 +126,37 @@ protected:
     QString mCurrentPlugin;
 
 
-	/**
-	 * Plug-in manager.
-	 */
-	PluginManager* mPluginManager;
-    
-        
+    /**
+     * Plug-in manager.
+     */
+    PluginManager* mPluginManager;
+
+
+
+
+    // ************************************************************
+    // Static Member Declarations
+    // ************************************************************
+    /**
+     * @param item Item to process.
+     * @param highlight Flag highlighting the item.
+     * @return Font for display plug-ins.
+     */
+    static QFont setFont(QListWidgetItem* item, bool highlight);
+
 
 
 private slots:
-	/**
-	 * Load selected plug-in.
-	 */
-	void loadPlugin();
+    /**
+     * Check selected plug-in.
+     */
+    void checkPlugin(QListWidgetItem* item);
+
+
+    /**
+     * Load selected plug-in.
+     */
+    void loadPlugin();
 
 
     /**
@@ -148,11 +166,11 @@ private slots:
     void loadPlugin(QListWidgetItem* item);
 
 
-	/**
-	 * Populate plug-in.
-	 * @param meta Meta data of the plug-in.
-	 */
-	void populatePlugin(const MetaData& meta);
+    /**
+     * Populate plug-in.
+     * @param meta Meta data of the plug-in.
+     */
+    void populatePlugin(const PluginMetaData& meta);
 
 
     /**
@@ -176,16 +194,16 @@ private slots:
     void toggleLoadAndUnloadButtons(const bool state);
 
 
-	/**
-	 * Unload selected plug-in.
-	 */
+    /**
+     * Unload selected plug-in.
+     */
     void unloadPlugin();
 
 
-}; // End class MainWindow
+};  // End class MainWindow
 
 
-} // End namespace ndx
+}  // End namespace ndx
 
 
-#endif // _MainWindow_h_
+#endif  // _MainWindow_h_

@@ -53,11 +53,13 @@ void EchoForm::displayMessage() {
 
 
 void EchoForm::shutDown() {
+    LOG_DEBUG_LEVEL_PREFIX("Shutdown up plug-in.", "EchoForm");
 	Plugin::shutDown();
 }
 
 
 bool EchoForm::startUp(QWidget* parent) {
+    LOG_DEBUG_LEVEL_PREFIX("Starting up plug-in.", "EchoForm");
 	Plugin::startUp(parent);
 
 	// Setup objects from the UI form.

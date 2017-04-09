@@ -17,8 +17,8 @@
  */
 
 
-#ifndef __Controller_h__
-#define __Controller_h__
+#ifndef _Controller_h_
+#define _Controller_h_
 
 
 // Local includes
@@ -42,7 +42,7 @@ public:
      * Default constructor.
      * @param parent Parent widget.
      */
-	Controller(QWidget* parent = 0x0);
+	Controller(QWidget* parent = nullptr);
     
 	
 	/**
@@ -114,4 +114,4 @@ protected:
 } // End namespace ndx
 
 
-#endif // __Controller_h__
+#endif // _Controller_h_

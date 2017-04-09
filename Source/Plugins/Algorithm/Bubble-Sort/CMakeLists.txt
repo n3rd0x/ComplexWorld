@@ -137,10 +137,13 @@ set(LOCAL_INCLUDES
 	${CMAKE_CURRENT_BINARY_DIR}
     ${LOCAL_PATH_HEADER}
     ${LOCAL_PATH_GROUP_HEADER}
+    ${PROJECT_INCLUDE_DIR}
+    ${NDXLIB_INCLUDE_DIR}
 )
 
 # Project libraries.
 set(LOCAL_LIBRARIES
+    ${PROJECT_LIBRARIES}
 )
 
 # Project includes.
@@ -156,7 +159,7 @@ include_directories(${LOCAL_INCLUDES})
 add_library(${PROJECT_NAME} SHARED ${LOCAL_HEADERS} ${LOCAL_SOURCES} ${LOCAL_QT_FILES})
 
 # Link libraries.
-target_link_libraries(${PROJECT_NAME} ${LOCAL_LIBRARIES})
+target_link_libraries(${PROJECT_NAME} ${LOCAL_LIBRARIES} Library)
 
 # Target options.
 set_target_properties(

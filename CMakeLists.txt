@@ -63,6 +63,7 @@ set(PROJECT_PATH_DATA   "${PROJECT_PATH_ROOT}/Data")
 
 # Include common files.
 include("CommonAlgorithmFiles")
+include("CommonFiles")
 
 # Project selections.
 option(Build_AllBuilds "Enable all modules." OFF)
@@ -103,9 +104,17 @@ if(SearchQt)
     find_package(CustomQt5 COMPONENTS "Qt5Core;Qt5Gui;Qt5Widgets")
 endif()
  
- 
 # Initialise the dependencies based on the SDK.
 initialise_project_sdk_library()
+
+# Set project dependencies.
+set(PROJECT_INCLUDE_DIR
+    "${POCO_INCLUDE_DIR}"
+)
+
+set(PROJECT_LIBRARIES
+    "${POCO_FOUNDATION_LIBRARIES}"
+)
 
 # Adding dependencies.
 package_copy_binary_from_target(POCO)

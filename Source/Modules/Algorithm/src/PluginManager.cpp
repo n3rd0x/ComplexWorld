@@ -24,7 +24,6 @@
 
 // Qt includes
 #include <QLibrary>
-#include <QPluginLoader>
 
 
 namespace ndx {
@@ -34,8 +33,8 @@ namespace ndx {
 // Class Implementations
 // ************************************************************
 PluginManager::PluginManager() {
-	mCurrentPlugin.mLoader = 0x0;
-	mCurrentPlugin.mPlugin = 0x0;
+	mCurrentPlugin.mLoader = nullptr;
+	mCurrentPlugin.mPlugin = nullptr;
 }
 
 
@@ -83,8 +82,8 @@ void PluginManager::unload() {
 	if(mCurrentPlugin.mPlugin) {
 		mCurrentPlugin.mPlugin->shutDown();
 		mCurrentPlugin.mLoader->unload();
-		mCurrentPlugin.mLoader = 0x0;
-		mCurrentPlugin.mPlugin = 0x0;
+		mCurrentPlugin.mLoader = nullptr;
+		mCurrentPlugin.mPlugin = nullptr;
 	}
 }
 

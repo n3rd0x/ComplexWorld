@@ -20,7 +20,9 @@
 // Local includes
 #include "BubbleSort.h"
 #include "Controller.h"
-#include "RandomNumber.h"
+
+// ndxLib includes
+#include "ndxNumberGenerator.h"
 
 // Qt includes
 #include<QtGui>
@@ -232,9 +234,8 @@ bool BubbleSort::startUp(QWidget* parent) {
 	setupUi(this);
 
     QTime time      = QTime::currentTime();
-    mNumGenerator   = new RandomNumber();
+    mNumGenerator   = new NumberGenerator();
     mViewGridLayout = new QGridLayout(mViewGroupBox);
-    mNumGenerator->setSeed((uint)time.msec());
     mNumGenerator->setRange(0, 50);
 
     mIterator.finished  = false;

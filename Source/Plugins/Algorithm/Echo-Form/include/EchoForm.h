@@ -17,8 +17,8 @@
  */
 
 
-#ifndef __EchoForm_h__
-#define __EchoForm_h__
+#ifndef _EchoForm_h_
+#define _EchoForm_h_
 
 
 // Local includes
@@ -80,4 +80,4 @@ protected slots:
 } // End namespace ndx
 
 
-#endif // __EchoForm_h__
+#endif // _EchoForm_h_

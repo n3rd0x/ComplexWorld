@@ -17,8 +17,8 @@
  */
 
 
-#ifndef __BubbleSort_h__
-#define __BubbleSort_h__
+#ifndef _BubbleSort_h_
+#define _BubbleSort_h_
 
 
 // Local includes
@@ -32,7 +32,7 @@ namespace ndx {
 // ************************************************************
 // Class Forward Declarations
 // ************************************************************
-class RandomNumber;
+class NumberGenerator;
 
 
 
@@ -288,7 +288,7 @@ protected:
     /**
      * Random number generator.
      */
-    RandomNumber* mNumGenerator;
+    NumberGenerator* mNumGenerator;
 
 
     /**
@@ -328,4 +328,4 @@ protected slots:
 } // End namespace ndx
 
 
-#endif // __BubbleSort_h__
+#endif // _BubbleSort_h_

@@ -17,6 +17,7 @@
 # ************************************************************
 
 
+add_subdirectory("Library")
 if(QT_FOUND)
     if(Build_Module_Algorithm_STATE)
         add_subdirectory("Algorithm")

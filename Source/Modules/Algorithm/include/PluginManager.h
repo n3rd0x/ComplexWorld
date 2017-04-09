@@ -17,20 +17,13 @@
  */
 
 
-#ifndef __PluginManager_h__
-#define __PluginManager_h__
+#ifndef _PluginManager_h_
+#define _PluginManager_h_
 
 
 // Qt includes
 #include <QtCore>
-
-
-// ************************************************************
-// Class Forward Declarations
-// ************************************************************
-class QPluginLoader;
-
-
+#include <QPluginLoader>
 
 
 namespace ndx {
@@ -41,8 +34,6 @@ namespace ndx {
 // ************************************************************
 class MetaData;
 class Plugin;
-
-
 
 
 /**
@@ -70,15 +61,6 @@ public:
 		 */
 		Plugin* mPlugin;
 	} mCurrentPlugin;
-
-
-	// ************************************************************
-	// Type Definition Declarations
-	// ************************************************************ 
-	/**
-	 * List of plug-ins.
-	 */
-	typedef QHash<QString, QPluginLoader*> Plugins;
 
 
 
@@ -121,11 +103,15 @@ public:
 	void unload();
 
 
+
+
 private:
 	/**
 	 * List of plug-ins.
 	 */
-	Plugins mPlugins;
+	QHash<QString, QPluginLoader*> mPlugins;
+
+
 
 
 signals:
@@ -156,4 +142,5 @@ signals:
 } // End namespace ndx
 
 
-#endif // __PluginManager_h__
+#endif // _PluginManager_h_
+

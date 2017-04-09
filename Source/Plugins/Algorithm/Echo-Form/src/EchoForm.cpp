@@ -20,6 +20,9 @@
 // Local includes
 #include "EchoForm.h"
 
+// ndxLib includes
+#include "ndxLogManager.h"
+
 // Qt includes
 #include<QtGui>
 

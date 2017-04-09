@@ -17,45 +17,22 @@
  */
 
 
-// Local includes
-#include "Plugin.h"
-
-
-namespace ndx {
+#ifndef _Macros_h_
+#define _Macros_h_
 
 
 // ************************************************************
-// Class Implementations
+// Cleaning pointers
 // ************************************************************
-Plugin::Plugin() : QWidget(nullptr) {
-}
+#ifndef SAFE_CLEAN_POINTER
+    #define SAFE_CLEAN_POINTER(Var) { \
+        if(Var != nullptr) { \
+            delete Var; \
+            Var = nullptr; \
+        } \
+    }
+#endif
 
 
-Plugin::~Plugin() {
-}
-
-
-void Plugin::setMetaData(const MetaData& meta) {
-	mMetaData = meta;
-}
-
-
-void Plugin::shutDown() {
-	setParent(nullptr);
-}
-
-
-bool Plugin::startUp(QWidget* parent) {
-	setParent(parent);
-
-	// Set default grid layout if exists.
-	QGridLayout* layout = dynamic_cast<QGridLayout*>(parent->layout());
-	if(layout) {
-		layout->addWidget(this, 0, 0, 1, 1);
-	}
-    return true;
-}
-
-
-} // End namespace ndx
+#endif // _Macros_h_
 

@@ -22,7 +22,8 @@
 # ************************************************************
 # Project Details
 # ************************************************************
-initialise_local_project("Algorithm_EchoForm" "An echo form sample.")
+initialise_local_project("Library" "ndxLib library.")
+
 
 
 
@@ -32,11 +33,8 @@ initialise_local_project("Algorithm_EchoForm" "An echo form sample.")
 # ************************************************************
 # Local paths.
 initialise_local_variable()
-set(LOCAL_PATH_RESOURCE "${CMAKE_CURRENT_SOURCE_DIR}/res")
-set(LOCAL_PATH_RESOURCE_UI "${LOCAL_PATH_RESOURCE}/ui")
+add_definitions(-DNDXLIB_NONCLIENT_BUILD)
 
-# Set Qt plug-in.
-add_definitions(-DQT_PLUGIN)
 
 
 
@@ -44,11 +42,11 @@ add_definitions(-DQT_PLUGIN)
 # Header Files
 # ************************************************************
 set(LOCAL_HEADER_FILES
-    "${LOCAL_PATH_HEADER}/EchoForm.json"
-)
-
-set(LOCAL_QT_HEADER_FILES
-    "${LOCAL_PATH_HEADER}/EchoForm.h"
+    "${LOCAL_PATH_HEADER}/ndxLogManager.h"
+    "${LOCAL_PATH_HEADER}/ndxMacros.h"
+    "${LOCAL_PATH_HEADER}/ndxNumberGenerator.h"
+    "${LOCAL_PATH_HEADER}/ndxPrerequisites.h"
+    "${LOCAL_PATH_HEADER}/ndxSingleton.h"
 )
 
 
@@ -58,51 +56,9 @@ set(LOCAL_QT_HEADER_FILES
 # Source Files
 # ************************************************************
 set(LOCAL_SOURCE_FILES
-    
+    "${LOCAL_PATH_SOURCE}/ndxLogManager.cpp"
+    "${LOCAL_PATH_SOURCE}/ndxNumberGenerator.cpp"
 )
-
-set(LOCAL_QT_SOURCE_FILES
-    "${LOCAL_PATH_SOURCE}/EchoForm.cpp"
-)
-
-set(LOCAL_QT_SOURCE_UI_FILES
-    "${LOCAL_PATH_RESOURCE_UI}/EchoForm.ui"
-)
-
-set(LOCAL_QT_SOURCE_QRC_FILES
-)
-
-
-
-
-# ************************************************************
-# Common Files
-# ************************************************************
-enable_algorithm_qt_common_files()
-
-
-
-
-# ************************************************************
-# Qt Generated Files
-# ************************************************************
-# Group Qt headers and sources.
-set(LOCAL_QT_HEADERS
-	${LOCAL_QT_HEADER_FILES}
-)
-
-set(LOCAL_QT_SOURCES
-	${LOCAL_QT_SOURCE_FILES}
-)
-
-# Qt generated files.
-qt5_wrap_cpp(LOCAL_QT_GENERATED_MOC_FILES ${LOCAL_QT_HEADERS})
-qt5_wrap_ui(LOCAL_QT_GENERATED_UI_FILES ${LOCAL_QT_SOURCE_UI_FILES})
-
-# Group files.
-source_group("Generated Files\\Moc Files" FILES ${LOCAL_QT_GENERATED_MOC_FILES})
-source_group("Generated Files\\UI Files" FILES ${LOCAL_QT_GENERATED_UI_FILES})
-source_group("UI Files" FILES ${LOCAL_QT_SOURCE_UI_FILES})
 
 
 
@@ -120,25 +76,22 @@ set(LOCAL_SOURCES
     ${LOCAL_SOURCE_FILES}
 )
 
-# Project Qt files.
-set(LOCAL_QT_FILES
-	${LOCAL_QT_HEADER_FILES}
-	${LOCAL_QT_SOURCE_FILES}
-	${LOCAL_QT_GENERATED_MOC_FILES}
-	${LOCAL_QT_GENERATED_UI_FILES}
-)
-
-# Local include directories.
+# Project include directories.
 set(LOCAL_INCLUDES
 	${CMAKE_CURRENT_BINARY_DIR}
     ${LOCAL_PATH_HEADER}
     ${PROJECT_INCLUDE_DIR}
-    ${NDXLIB_INCLUDE_DIR}
 )
 
 # Project libraries.
 set(LOCAL_LIBRARIES
     ${PROJECT_LIBRARIES}
+)
+
+# Make include path available for sub projects.
+set(NDXLIB_INCLUDE_DIR
+    ${LOCAL_PATH_HEADER}
+    CACHE INTERNAL "Include path of ndxLib."
 )
 
 # Project includes.
@@ -154,24 +107,16 @@ include_directories(${LOCAL_INCLUDES})
 add_library(${PROJECT_NAME} SHARED ${LOCAL_HEADERS} ${LOCAL_SOURCES} ${LOCAL_QT_FILES})
 
 # Link libraries.
-target_link_libraries(${PROJECT_NAME} ${LOCAL_LIBRARIES} Library)
+target_link_libraries(${PROJECT_NAME} ${LOCAL_LIBRARIES})
 
 # Target options.
 set_target_properties(
     ${PROJECT_NAME}
     PROPERTIES
-    ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}"
-    LIBRARY_OUTPUT_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}"
-    RUNTIME_OUTPUT_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}"
+    OUTPUT_NAME "ndxLib"
     DEBUG_POSTFIX "${CMAKE_DEBUG_POSTFIX}"
 )
 
-# Use Qt modules.
-qt5_use_modules(${PROJECT_NAME} Core Gui Widgets)
-
 # Copy project templates.
 copy_project_template()
-
-# Copy the generated plug-in to the output directory.
-copy_build_file_to_output_directory(SubPath "/Plugins")
 

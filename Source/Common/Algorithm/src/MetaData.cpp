@@ -64,4 +64,6 @@ QString MetaData::getString(const QJsonObject& meta, const QString& keyword) {
 	return QString("");
 }
 
+
 } // End namespace ndx
+

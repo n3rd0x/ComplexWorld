@@ -17,6 +17,8 @@
 # ************************************************************
 
 
-add_subdirectory("Modules")
-add_subdirectory("Plugins")
+if(POCO_FOUND)
+    add_subdirectory("Modules")
+    add_subdirectory("Plugins")
+endif()
 

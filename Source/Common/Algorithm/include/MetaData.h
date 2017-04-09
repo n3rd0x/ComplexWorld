@@ -17,8 +17,8 @@
  */
 
 
-#ifndef __MetaData_h__
-#define __MetaData_h__
+#ifndef _MetaData_h_
+#define _MetaData_h_
 
 
 // Qt includes
@@ -95,4 +95,5 @@ public:
 } // End namespace ndx
 
 
-#endif // __MetaData_h__
+#endif // _MetaData_h_
+

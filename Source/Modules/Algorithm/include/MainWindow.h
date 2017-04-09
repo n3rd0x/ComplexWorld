@@ -17,8 +17,8 @@
  */
 
 
-#ifndef __MainWindow_h__
-#define __MainWindow_h__
+#ifndef _MainWindow_h_
+#define _MainWindow_h_
 
 
 // Qt includes
@@ -58,7 +58,7 @@ public:
 	 * @param parent Parent of this window.
 	 * @param flags Window flags.
 	 */
-    MainWindow(QWidget* parent = 0x0, Qt::WindowFlags flags = 0);
+    MainWindow(QWidget* parent = nullptr, Qt::WindowFlags flags = 0);
     
 	
 	/**
@@ -69,11 +69,12 @@ public:
 
 	/**
 	 * Setup the window.
-	 * @param aLangs Available languages.
 	 * @param pDir Plug-in directory.
 	 * @return True on success.
 	 */
-    bool setup(const QStringList& aLangs, const QString& pDir);
+    bool setup(const QString& pDir);
+
+
 
 
 signals:
@@ -83,33 +84,9 @@ signals:
     void signalToClose();
 
 
-	/**
-	 * Signal to retranslate.
-	 */
-    void signalToRetranslate();
 
 
-	/**
-	 * Signal to change the language.
-	 * @param language Language to change to.
-	 */
-    void signalToLanguageChanged(QAction* language);
-
-
-private:
-	/**
-	 * @see QWidget::changeEvent(QEvent*)
-	 * Retranslate if necessary.
-	 */
-	//void changeEvent(QEvent* evt);
-
-
-	/**
-	 * @see QWidget::closeEvent(QCloseEvent*)
-	 */
-	//void closeEvent(QCloseEvent* evt);
-
-
+protected:
 	/**
 	 * Initialise pointers.
 	 */
@@ -120,12 +97,6 @@ private:
 	 * Initialise values.
 	 */
     void initValues();
-
-
-	/**
-	 * Retranslate.
-	 */
-    void retranslate();
 
 
 	/**
@@ -143,27 +114,10 @@ private:
 
 
 	/**
-	 * Setup languages.
-	 * @param list List of available languages.
-	 * @param dLang Desired language.
-	 * @return True on success.
-	 */
-    //bool setupLanguages(const QStringList& list, const QString& dLang = "");
-
-
-	/**
 	 * Setup objects.
 	 * @return True on success.
 	 */
     bool setupObjects();
-
-
-	/**
-	 * Translate for this window.
-	 * @param str String to translate.
-	 * @return The translated string.
-	 */
-    QString translate(const QString& str);
 
 
     /**
@@ -173,26 +127,14 @@ private:
 
 
 	/**
-	 * Group of languages.
-	 */
-    QActionGroup* mLanguages;
-
-
-	/**
 	 * Plug-in manager.
 	 */
 	PluginManager* mPluginManager;
     
         
 
+
 private slots:
-	/**
-	 * Change language.
-	 * @param language Language to change to.
-	 */
-    void changeLanguage(QAction* language);
-
-
 	/**
 	 * Load selected plug-in.
 	 */
@@ -246,4 +188,4 @@ private slots:
 } // End namespace ndx
 
 
-#endif // __MainWindow_h__
+#endif // _MainWindow_h_

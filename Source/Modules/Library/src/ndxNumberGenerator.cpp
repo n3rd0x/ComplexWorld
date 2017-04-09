@@ -18,50 +18,45 @@
 
 
 // Local includes
-#include "RandomNumber.h"
+#include "ndxNumberGenerator.h"
+
+// STL includes
+#include <chrono>
 
 
 namespace ndx {
 
 
 // ************************************************************
+// Static Implementations
+// ************************************************************
+std::default_random_engine NumberGenerator::mGenerator(std::chrono::system_clock::now().time_since_epoch().count());
+
+
+double NumberGenerator::generate(const double low, const double high) {
+    std::uniform_real_distribution<double> distributor(low, high);
+    return distributor(mGenerator);
+}
+
+
+
+
+// ************************************************************
 // Class Implementations
 // ************************************************************
-RandomNumber::RandomNumber(const uint seed) {
-	setSeed(seed);
-    mLow  = 0;
-    mHigh = 100;
+NumberGenerator::NumberGenerator(const double low, const double high) {
+    setRange(low, high);
 }
 
 
-RandomNumber::RandomNumber(const int low, const int high, const uint seed) {
-    setSeed(seed);
-    mLow  = low;
-    mHigh = high;
-}
-
-
-int RandomNumber::generate() {
+double NumberGenerator::generate() {
     return generate(mLow, mHigh);
 }
 
 
-int RandomNumber::generate(const int low, const int high) {
-    // Random number between low and high
-    return qrand() % ((high + 1) - low) + low;
-}
-
-
-void RandomNumber::setRange(const int low, const int high) {
+void NumberGenerator::setRange(const double low, const double high) {
     mLow  = low;
     mHigh = high;
-}
-
-
-void RandomNumber::setSeed(const uint seed) {
-    if(seed != 0) {
-        qsrand(seed);
-    }
 }
 
 

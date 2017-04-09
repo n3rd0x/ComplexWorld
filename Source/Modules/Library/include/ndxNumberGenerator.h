@@ -17,55 +17,40 @@
  */
 
 
-#ifndef __RandomNumber_h__
-#define __RandomNumber_h__
+#ifndef _ndxNumberGenerator_h_
+#define _ndxNumberGenerator_h_
 
 
-// Qt includes
-#include <QtCore>
+// Local includes
+#include "ndxPrerequisites.h"
+
+// STL includes
+#include <random>
 
 
 namespace ndx {
 
 
 /**
- * Random generator.
- * Reference:
- *   - http://developer.nokia.com/Community/Wiki/Generating_random-value_integers_in_Qt
+ * A random number generator.
  */
-class RandomNumber {
+class _ndxLibExport NumberGenerator {
 public:
 	// ************************************************************
 	// Member Declarations
 	// ************************************************************
 	/**
-	 * Default constructor with initialisation of range [0, 100]
-     * @param seed Generate seed for the random number.
-	 */
-	RandomNumber(const uint seed = 0);
-
-
-    /**
-	 * Constructor with initialisation of range number.
+     * Constructor with initialisation of range number.
      * @param low Low range.
      * @param high High range.
-     * @param seed Generate seed for the random number.
 	 */
-	RandomNumber(const int low, const int high, const uint seed = 0);
+	NumberGenerator(const double low = 0.0, const double high = 100.0);
 
 
     /**
      * @return A random number.
      */
-    int generate();
-
-
-    /**
-     * @param low Low number.
-     * @param high High number.
-     * @return A random number.
-     */
-    int generate(const int low, const int high);
+    double generate();
 
 
     /**
@@ -73,33 +58,58 @@ public:
      * @param low Lower range.
      * @param high High range.
      */
-    void setRange(const int low, const int high);
+    void setRange(const double low, const double high);
 
 
+
+
+    // ************************************************************
+    // Static Member Declarations
+    // ************************************************************
     /**
-     * Set seed.
-     * @param seed Seed for the random number.
+     * @param low Low number.
+     * @param high High number.
+     * @return A random number.
      */
-    void setSeed(const uint seed);
+    static double generate(const double low, const double high);
+
+
 
 
 protected:
+    // ************************************************************
+    // Member Declarations
+    // ************************************************************
     /**
      * Low number.
      */
-    int mLow;
+    double mLow;
 
 
     /**
      * High number.
      */
-    int mHigh;
+    double mHigh;
 
 
-}; // End class RandomNumber
+
+
+    // ************************************************************
+    // Static Member Declarations
+    // ************************************************************
+    /**
+     * Default random engine.
+     */
+    static std::default_random_engine mGenerator;
+
+
+
+
+}; // End class NumberGenerator
 
 
 } // End namespace ndx
 
 
-#endif // __RandomNumber_h__
+#endif // _ndxNumberGenerator_h_
+

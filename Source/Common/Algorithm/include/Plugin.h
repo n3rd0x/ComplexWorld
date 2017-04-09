@@ -17,8 +17,8 @@
  */
 
 
-#ifndef __Plugin_h__
-#define __Plugin_h__
+#ifndef _Plugin_h_
+#define _Plugin_h_
 
 
 // Local includes
@@ -76,6 +76,8 @@ public:
     virtual bool startUp(QWidget* parent);
 
 
+
+
 protected:
 	/**
 	 * Meta data.
@@ -95,4 +97,4 @@ protected:
 Q_DECLARE_INTERFACE(ndx::Plugin, "ndx.Algorithms.Plugin")
 
 
-#endif // __Plugin_h__
+#endif // _Plugin_h_

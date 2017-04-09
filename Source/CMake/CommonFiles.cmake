@@ -20,10 +20,10 @@
 # ************************************************************
 # Configurations
 # ************************************************************
-set(COMMON_PATH_GENERIC_ROOT "${PROJECT_PATH_SOURCE}/Common/Generic")
-set(COMMON_PATH_GENERIC_HEADER "${COMMON_PATH_GENERIC_ROOT}/include")
-set(COMMON_PATH_GENERIC_SOURCE "${COMMON_PATH_GENERIC_ROOT}/src")
-set(COMMON_INCLUDE_DIR_GENERIC "${COMMON_PATH_GENERIC_HEADER}")
+set(COMMON_PATH_ROOT "${PROJECT_PATH_SOURCE}/Common/Generic")
+set(COMMON_PATH_HEADER "${COMMON_PATH_ROOT}/include")
+set(COMMON_PATH_SOURCE "${COMMON_PATH_ROOT}/src")
+set(COMMON_INCLUDE_DIR "${COMMON_PATH_HEADER}")
 
 
 
@@ -31,8 +31,7 @@ set(COMMON_INCLUDE_DIR_GENERIC "${COMMON_PATH_GENERIC_HEADER}")
 # ************************************************************
 # Header Files
 # ************************************************************
-set(COMMON_GENERIC_HEADER_FILES
-    "${COMMON_PATH_GENERIC_HEADER}/LogManager.h"
+set(COMMON_HEADER_FILES
 )
 
 
@@ -41,8 +40,7 @@ set(COMMON_GENERIC_HEADER_FILES
 # ************************************************************
 # Source Files
 # ************************************************************
-set(COMMON_GENERIC_SOURCE_FILES
-    "${COMMON_PATH_GENERIC_SOURCE}/LogManager.cpp"
+set(COMMON_SOURCE_FILES
 )
 
 
@@ -52,16 +50,16 @@ set(COMMON_GENERIC_SOURCE_FILES
 # Macro
 # ************************************************************
 # Set header and source files.
-macro(ENABLE_GENERIC_COMMON_FILES)
+macro(ENABLE_COMMON_FILES)
     # Group files.
-    source_group("Header Files\\Common\\Generic" FILES ${COMMON_GENERIC_HEADER_FILES})
-    source_group("Source Files\\Common\\Generic" FILES ${COMMON_GENERIC_SOURCE_FILES})
+    source_group("Header Files\\Common\\Library" FILES ${COMMON_HEADER_FILES})
+    source_group("Source Files\\Common\\Library" FILES ${COMMON_SOURCE_FILES})
     
     # Add into global header file variable.
-    set(LOCAL_HEADER_FILES ${LOCAL_HEADER_FILES} ${COMMON_GENERIC_HEADER_FILES})
-    set(LOCAL_SOURCE_FILES ${LOCAL_SOURCE_FILES} ${COMMON_GENERIC_SOURCE_FILES})
+    set(LOCAL_HEADER_FILES ${LOCAL_HEADER_FILES} ${COMMON_HEADER_FILES})
+    set(LOCAL_SOURCE_FILES ${LOCAL_SOURCE_FILES} ${COMMON_SOURCE_FILES})
     
     # Set include directory.
-    include_directories(${COMMON_INCLUDE_DIR_GENERIC})
+    include_directories(${COMMON_INCLUDE_DIR})
 endmacro()
 

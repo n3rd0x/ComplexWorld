@@ -34,10 +34,12 @@ set(COMMON_INCLUDE_DIR_ALGORITHM "${COMMON_PATH_ALGORITHM_HEADER}")
 # ************************************************************
 # Header Files
 # ************************************************************
-set(COMMON_ALGORITHM_QT_HEADER_FILES
+set(COMMON_ALGORITHM_HEADER_FILES
     "${COMMON_PATH_ALGORITHM_HEADER}/MetaData.h"
+)
+
+set(COMMON_ALGORITHM_QT_HEADER_FILES
     "${COMMON_PATH_ALGORITHM_HEADER}/Plugin.h"
-    "${COMMON_PATH_ALGORITHM_HEADER}/RandomNumber.h"
 )
 
 set(COMMON_ALGORITHM_QT_HEADER_WIDGET_FILES
@@ -50,10 +52,12 @@ set(COMMON_ALGORITHM_QT_HEADER_WIDGET_FILES
 # ************************************************************
 # Source Files
 # ************************************************************
-set(COMMON_ALGORITHM_QT_SOURCE_FILES
+set(COMMON_ALGORITHM_SOURCE_FILES
     "${COMMON_PATH_ALGORITHM_SOURCE}/MetaData.cpp"
+)
+
+set(COMMON_ALGORITHM_QT_SOURCE_FILES
     "${COMMON_PATH_ALGORITHM_SOURCE}/Plugin.cpp"
-    "${COMMON_PATH_ALGORITHM_SOURCE}/RandomNumber.cpp"
 )
 
 set(COMMON_ALGORITHM_QT_SOURCE_WIDGET_FILES
@@ -83,10 +87,12 @@ set(COMMON_ALGORITHM_QT_UI_FILES
 # Set header and source files.
 macro(ENABLE_ALGORITHM_QT_COMMON_FILES)
     # Group files.
-    source_group("Header Files\\Common" FILES ${COMMON_ALGORITHM_QT_HEADER_FILES})
-    source_group("Source Files\\Common" FILES ${COMMON_ALGORITHM_QT_SOURCE_FILES})
+    source_group("Header Files\\Common" FILES ${COMMON_ALGORITHM_QT_HEADER_FILES} ${COMMON_ALGORITHM_HEADER_FILES})
+    source_group("Source Files\\Common" FILES ${COMMON_ALGORITHM_QT_SOURCE_FILES} ${COMMON_ALGORITHM_SOURCE_FILES})
     
     # Add into global header file variable.
+    set(LOCAL_HEADER_FILES ${LOCAL_HEADER_FILES} ${COMMON_ALGORITHM_HEADER_FILES})
+    set(LOCAL_SOURCE_FILES ${LOCAL_SOURCE_FILES} ${COMMON_ALGORITHM_SOURCE_FILES})
     set(LOCAL_QT_HEADER_FILES ${LOCAL_QT_HEADER_FILES} ${COMMON_ALGORITHM_QT_HEADER_FILES})
     set(LOCAL_QT_SOURCE_FILES ${LOCAL_QT_SOURCE_FILES} ${COMMON_ALGORITHM_QT_SOURCE_FILES})
     

@@ -20,10 +20,7 @@
 // Local includes
 #include "Application.h"
 #include "MainWindow.h"
-
-// Qt includes
-#include <QAction>
-#include <QTranslator>
+#include "ndxLogManager.h"
 
 
 namespace ndx {
@@ -33,19 +30,11 @@ namespace ndx {
 // Class Implementations
 // ************************************************************
 Application::Application(int& argc, char** argv) : QApplication(argc, argv) {
-    mCurrentTranslator	= 0x0;
-    mMainWindow			= 0x0;
-    mPath.mLanguage		= "./languages";
-	mPath.mPlugin		= "./plugins";
+    mMainWindow = nullptr;
 }
 
 
 Application::~Application() {
-    // Clean all translators objects.
-	for(auto& itr : mTranslators) {
-		delete itr;
-	}
-    mTranslators.clear();
 }
 
 
@@ -54,58 +43,17 @@ void Application::close() {
 }
 
 
-void Application::loadTranslations(const QString& str) {
-    loadTranslations(QDir(str));
-}
-
-
-void Application::loadTranslations(const QDir& dir) {
-    // <language>_<country>
-    // Get language files.
-    QFileInfoList entries = dir.entryInfoList(QStringList() << "*_*.qm", QDir::Files | QDir::Readable, QDir::Name);
-
-    // Create a translator for each language.
-    for(int i = 0; i < entries.size(); i++) {
-        QFileInfo file = entries.at(i);
-
-        QTranslator* translator = new QTranslator(instance());
-        if(translator->load(file.absoluteFilePath())) {
-            mTranslators.insert(file.baseName(), translator);
-        } else {
-            delete translator;
-        }
-    }
-}
-
-
-void Application::setLanguage(QAction* action) {
-    QTranslator* translator = mTranslators.value(action->data().toString(), 0x0);
-    if(translator) {
-        if(mCurrentTranslator) {
-			removeTranslator(mCurrentTranslator);
-		}
-
-        mCurrentTranslator = translator;
-        installTranslator(mCurrentTranslator);
-    }
-}
-
-
 bool Application::setupConnections() {
-    // Connect change language signal.
-	//connect(mMainWindow, &MainWindow::signalToLanguageChanged, this, &Application::setLanguage);
-
-    // Connect the close event.
-    //connect(mMainWindow, SIGNAL(signClose()), this, SLOT(close()));
     return true;
 }
 
 
 bool Application::setupFinalSteps() {
-    if(!mMainWindow->setup(mTranslators.keys(), mPath.mPlugin)) {
+    if(!mMainWindow->setup("./Plugins")) {
         return false;
     }
     mMainWindow->show();
+
     return true;
 }
 
@@ -119,15 +67,12 @@ bool Application::setupGuis() {
 void Application::shutDown() {
     if(mMainWindow) {
         delete mMainWindow;
-        mMainWindow = 0x0;
+        mMainWindow = nullptr;
     }
 }
 
 
 bool Application::startUp() {
-    // Load language files from the directory.
-    loadTranslations(mPath.mLanguage);
-
     if(!setupGuis())		{ return false; }
     if(!setupConnections()) { return false; }
     if(!setupFinalSteps())	{ return false; }

@@ -31,8 +31,9 @@ namespace ndx {
 // Static Member Implementations
 // ************************************************************
 QFont MainWindow::setFont(QListWidgetItem* item, bool highlight) {
-    QFont font("Calibri", 10);
+    QFont font;
     QColor colour(0, 0, 0);
+    font.setPointSize(8);
     if(highlight) {
         font.setBold(true);
         colour = QColor(0, 0, 255);

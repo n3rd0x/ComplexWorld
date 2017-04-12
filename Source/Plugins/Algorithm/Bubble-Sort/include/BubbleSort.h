@@ -214,7 +214,9 @@ protected:
     /**
      * Clear data set.
      */
-    void clearDataSet();
+    void clearDataSet(ViewDataSet& data, QGridLayout* layout);
+    void clearViewDataSet();
+    void clearRealtimeDataSet();
 
 
     /**
@@ -228,18 +230,29 @@ protected:
 
 
     /**
+     * Generate data.
+     * @param data Data set to process.
+     * @param layout Layout to process.
+     * @param nums Number of elements in the data set.
+     */
+    void generateData(ViewDataSet& data, QGridLayout* layout, qint32 nums);
+
+
+    /**
      * @param idx Index of the item.
+     * @param layout Layout to process.
      * @return Item based on the index.
      */
-    QLabel* getItem(const int idx);
+    QLabel* getItem(const int idx, QGridLayout* layout);
 
 
     /**
      * Get value based on the index.
      * @param idx Index of the item.
+     * @param layout Layout to process.
      * @return Value of the data set in the grid.
      */
-    int getValue(const int idx);
+    int getValue(const int idx, QGridLayout* layout);
 
 
     /**
@@ -262,8 +275,9 @@ protected:
      * Switch data index.
      * @param idxA Index a.
      * @param idxB Index b.
+     * @param layout Layout to process.
      */
-    void switchData(const int idxA, const int idxB);
+    void switchData(const int idxA, const int idxB, QGridLayout* layout);
 
 
     /**
@@ -272,8 +286,9 @@ protected:
      * @param idxA Index a.
      * @param itemB Item b.
      * @param idxB Index b.
+     * @param layout Layout to process.
      */
-    void switchData(QLabel* itemA, const int idxA, QLabel* itemB, const int idxB);
+    void switchData(QLabel* itemA, const int idxA, QLabel* itemB, const int idxB, QGridLayout* layout);
 
 
     /**
@@ -301,25 +316,44 @@ protected:
      * List of view data set.
      */
     ViewDataSet mViewDataSet;
+    ViewDataSet mRealtimeDataSet;
+    std::vector<qint32> mRealtimeDataSet2;
+
+
+    /**
+     * Flag for visualisation.
+     */
+    bool mRealtimeVisualisation;
 
 
     /**
      * Grid layout for viewing the data set.
      */
-    QGridLayout* mViewGridLayout;
+    QGridLayout* mVisualLayout;
+    QGridLayout* mRealtimeLayout;
+
+
 
 
 protected slots:
     /**
      * Generate data.
      */
-    void generateData();
+    void generateRealtimeData();
+    void generateViewData();
 
 
     /**
      * Sort.
      */
-    void sort();
+    void sortRealtime();
+    void sortVisual();
+
+
+    /**
+     * Widget changed in the tab.
+     */
+    void tabChanged(int idx);
 
 
 }; // End class BubbleSort

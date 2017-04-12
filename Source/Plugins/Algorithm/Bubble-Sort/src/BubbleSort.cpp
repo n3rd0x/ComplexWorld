@@ -106,12 +106,16 @@ void BubbleSort::generateRealtimeData() {
             mRealtimeDataSet, mRealtimeLayout, mNumsRealtimeData->value());
     }
     mRealtimeSort->setEnabled(true);
+    mRealtimeAsc->setEnabled(true);
+    mRealtimeDesc->setEnabled(true);
 }
 
 
 void BubbleSort::generateViewData() {
     // Stop timer.
     mViewController->stopClicked();
+    mViewAsc->setEnabled(true);
+    mViewDesc->setEnabled(true);
 
     generateData(mViewDataSet, mVisualLayout, mNumsViewData->value());
 
@@ -164,6 +168,8 @@ void BubbleSort::nextInteration(int& row, int& col) {
 
 void BubbleSort::sortRealtime() {
     mRealtimeSort->setEnabled(false);
+    mRealtimeAsc->setEnabled(false);
+    mRealtimeDesc->setEnabled(false);
     Poco::Stopwatch swe;
 
     // Don't visualize if size of the data set is to large.
@@ -173,7 +179,14 @@ void BubbleSort::sortRealtime() {
             for(int j = 0; j < i; j++) {
                 auto valA = mRealtimeDataSet2[j];
                 auto valB = mRealtimeDataSet2[j + 1];
-                if(valA > valB) {
+                auto swapData = false;
+                if(mRealtimeAsc->isChecked()) {
+                    swapData = (valA > valB);
+                }
+                else {
+                    swapData = (valA < valB);
+                }
+                if(swapData) {
                     auto tmp                 = valA;
                     mRealtimeDataSet2[j]     = valB;
                     mRealtimeDataSet2[j + 1] = tmp;
@@ -189,8 +202,15 @@ void BubbleSort::sortRealtime() {
                 auto itemB = getItem(j + 1, mRealtimeLayout);
                 auto valA  = getValue(itemA);
                 auto valB  = getValue(itemB);
+                auto swapData = false;
+                if(mRealtimeAsc->isChecked()) {
+                    swapData = (valA > valB);
+                }
+                else {
+                    swapData = (valA < valB);
+                }
                 swe.start();
-                if(valA > valB) {
+                if(swapData) {
                     swe.stop();
                     switchData(itemA, j, itemB, j + 1, mRealtimeLayout);
                     swe.start();
@@ -235,6 +255,8 @@ void BubbleSort::sortVisual() {
         mIterator.sj      = 0;
         mIterator.j       = 0;
         mIterator.state   = HL_COMPARE;
+        mViewAsc->setEnabled(false);
+        mViewDesc->setEnabled(false);
     }
 
     // Bubble sort.
@@ -264,7 +286,15 @@ void BubbleSort::sortVisual() {
                    || mIterator.state == HL_SWITCH) {
                     int valA = getValue(itemA);
                     int valB = getValue(itemB);
-                    if(valA > valB) {
+                    
+                    bool swapData = false;
+                    if(mViewAsc->isChecked()) {
+                        swapData = (valA > valB);
+                    }
+                    else {
+                        swapData = (valA < valB);
+                    }
+                    if(swapData) {
                         if(mIterator.state != HL_SWITCH
                            && mIterator.state != HL_SWITCH_CONTINUE) {
                             visualize(itemA, itemB, HL_SWITCH);

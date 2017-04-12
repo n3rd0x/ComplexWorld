@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Algorithms</string>
+   <string>Complex Application</string>
   </property>
   <widget class="QWidget" name="mCentralWidget">
    <layout class="QGridLayout" name="mGridLayout">
@@ -38,7 +38,7 @@
      <x>0</x>
      <y>0</y>
      <width>683</width>
-     <height>26</height>
+     <height>21</height>
     </rect>
    </property>
    <widget class="QMenu" name="mMenuFile">

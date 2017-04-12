@@ -19,8 +19,8 @@
 
 add_subdirectory("Library")
 if(QT_FOUND)
-    if(Build_Module_Algorithm_STATE)
-        add_subdirectory("Algorithm")
+    if(Build_Module_ComplexApplication_STATE)
+        add_subdirectory("Complex-Application")
     endif()
 endif()
 

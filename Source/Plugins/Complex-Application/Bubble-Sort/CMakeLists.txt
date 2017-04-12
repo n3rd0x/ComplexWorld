@@ -22,7 +22,7 @@
 # ************************************************************
 # Project Details
 # ************************************************************
-initialise_local_project("Algorithm_BubbleSort" "A bubble sort algorithm.")
+initialise_local_project("ComplexApplication_BubbleSort" "A bubble sort algorithm.")
 
 
 
@@ -77,8 +77,8 @@ set(LOCAL_QT_SOURCE_QRC_FILES
 # ************************************************************
 # Common Files
 # ************************************************************
-enable_algorithm_qt_common_files()
-enable_algorithm_qt_common_widget_files()
+enable_complex_application_qt_common_files()
+enable_complex_application_qt_common_widget_files()
 
 
 
@@ -179,3 +179,4 @@ copy_project_template()
 
 # Copy the generated plug-in to the output directory.
 copy_build_file_to_output_directory(SubPath "/Plugins")
+

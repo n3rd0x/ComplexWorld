@@ -62,23 +62,23 @@ set(PROJECT_PATH_SOURCE "${PROJECT_PATH_ROOT}/Source")
 set(PROJECT_PATH_DATA   "${PROJECT_PATH_ROOT}/Data")
 
 # Include common files.
-include("CommonAlgorithmFiles")
+include("CommonComplexApplicationFiles")
 include("CommonFiles")
 
 # Project selections.
 option(Build_AllBuilds "Enable all modules." OFF)
-option(Build_Module_Algorithm "Enable Algorithm module." OFF)
+option(Build_Module_ComplexApplication "Enable Conplex Application module." OFF)
 
 # Toggle project selections.
 set(Modules
-    Build_Module_Algorithm
+    Build_Module_ComplexApplication
 )
 toggle_enabling_state(Build_AllBuilds "${Modules}")
 
 
 # Searching for Qt.
 set(SearchQt FALSE)
-if(Build_Module_Algorithm_STATE)
+if(Build_Module_ComplexApplication_STATE)
     set(SearchQt TRUE)
 endif()
 

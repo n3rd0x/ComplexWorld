@@ -22,7 +22,7 @@
 # ************************************************************
 # Project Details
 # ************************************************************
-initialise_local_project("Algorithm_EchoForm" "An echo form sample.")
+initialise_local_project("ComplexApplication_EchoForm" "An echo form sample.")
 
 
 
@@ -78,7 +78,7 @@ set(LOCAL_QT_SOURCE_QRC_FILES
 # ************************************************************
 # Common Files
 # ************************************************************
-enable_algorithm_qt_common_files()
+enable_complex_application_qt_common_files()
 
 
 

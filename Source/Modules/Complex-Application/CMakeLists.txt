@@ -22,7 +22,7 @@
 # ************************************************************
 # Project Details
 # ************************************************************
-initialise_local_project("Module_Algorithm" "Application for exploring various algorithms.")
+initialise_local_project("Module_ComplexApplication" "Application for loading various plug-ins.")
 
 
 
@@ -82,7 +82,7 @@ set(LOCAL_QT_SOURCE_QRC_FILES
 # ************************************************************
 # Common Files
 # ************************************************************
-enable_algorithm_qt_common_files()
+enable_complex_application_qt_common_files()
 
 
 
@@ -168,6 +168,7 @@ target_link_libraries(${PROJECT_NAME} ${LOCAL_LIBRARIES} Library)
 set_target_properties(
     ${PROJECT_NAME}
     PROPERTIES
+    OUTPUT_NAME "Complex_Application"
     DEBUG_POSTFIX "${CMAKE_DEBUG_POSTFIX}"
 )
 

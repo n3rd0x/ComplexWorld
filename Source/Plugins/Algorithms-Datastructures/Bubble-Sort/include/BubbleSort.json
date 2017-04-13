@@ -1,5 +1,6 @@
 {
     "Name"        : "Bubble Sort",
+    "Category"    : "Algorithms & Data Structures",
     "Description" : "Bubble sort algorithm.",
-    "Version"     : "0.0.1"
+    "Version"     : "1.0.0"
 }

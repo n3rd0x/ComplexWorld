@@ -63,6 +63,7 @@ set(PROJECT_PATH_DATA   "${PROJECT_PATH_ROOT}/Data")
 
 # Include common files.
 include("CommonComplexApplicationFiles")
+include("CommonProgrammingGameAIFiles")
 include("CommonFiles")
 
 # Project selections.
@@ -102,6 +103,9 @@ if(SearchQt)
     endif()
 
     find_package(CustomQt5 COMPONENTS "Qt5Core;Qt5Gui;Qt5Widgets")
+    
+    # GLM (0.9.4.6)
+    find_package(CustomGLM)
 endif()
  
 # Initialise the dependencies based on the SDK.
@@ -110,6 +114,7 @@ initialise_project_sdk_library()
 # Set project dependencies.
 set(PROJECT_INCLUDE_DIR
     "${POCO_INCLUDE_DIR}"
+    "${GLM_INCLUDE_DIR}"
 )
 
 set(PROJECT_LIBRARIES
@@ -117,7 +122,7 @@ set(PROJECT_LIBRARIES
 )
 
 # Adding dependencies.
-package_copy_binary_from_target(POCO)
+package_copy_binary_from_target(POCO_FOUNDATION)
 
 if(SearchQt)
     package_copy_binary_from_target(QT)

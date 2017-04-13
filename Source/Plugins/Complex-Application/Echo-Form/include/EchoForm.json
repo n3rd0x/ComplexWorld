@@ -1,5 +1,6 @@
 {
     "Name"        : "Echo Form",
+    "Category"    : "Complex World",
     "Description" : "A form which echo the message that has been entered.",
     "Version"     : "0.0.1"
 }

@@ -18,6 +18,13 @@
 
 
 if(Build_Module_ComplexApplication_STATE)
-    add_subdirectory("Complex-Application")
+    if(QT_FOUND)
+        add_subdirectory("Algorithms-Datastructures")
+        add_subdirectory("Complex-Application")
+        
+        if(GLM_FOUND)
+            add_subdirectory("Programming-Game-AI")
+        endif()
+    endif()
 endif()
 

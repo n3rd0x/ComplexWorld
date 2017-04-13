@@ -22,7 +22,7 @@
 # ************************************************************
 # Project Details
 # ************************************************************
-initialise_local_project("ComplexApplication_BubbleSort" "A bubble sort algorithm.")
+initialise_local_project("Plugin_PGAI_SteeringBevahiours" "Steering behaviours.")
 
 
 
@@ -40,16 +40,15 @@ add_definitions(-DQT_PLUGIN)
 
 
 
-
 # ************************************************************
 # Header Files
 # ************************************************************
 set(LOCAL_HEADER_FILES
-    "${LOCAL_PATH_HEADER}/BubbleSort.json"
+    "${LOCAL_PATH_HEADER}/PluginWidget.json"
 )
 
 set(LOCAL_QT_HEADER_FILES
-    "${LOCAL_PATH_HEADER}/BubbleSort.h"
+    "${LOCAL_PATH_HEADER}/PluginWidget.h"
 )
 
 
@@ -63,22 +62,24 @@ set(LOCAL_SOURCE_FILES
 )
 
 set(LOCAL_QT_SOURCE_FILES
-    "${LOCAL_PATH_SOURCE}/BubbleSort.cpp"
+    "${LOCAL_PATH_SOURCE}/PluginWidget.cpp"
 )
 
 set(LOCAL_QT_SOURCE_UI_FILES
-    "${LOCAL_PATH_RESOURCE_UI}/BubbleSort.ui"
+    "${LOCAL_PATH_RESOURCE_UI}/PluginWidget.ui"
 )
 
 set(LOCAL_QT_SOURCE_QRC_FILES
 )
 
 
+
+
 # ************************************************************
 # Common Files
 # ************************************************************
+enable_programming_game_ai_common_common_files()
 enable_complex_application_qt_common_files()
-enable_complex_application_qt_common_widget_files()
 
 
 
@@ -97,14 +98,11 @@ set(LOCAL_QT_SOURCES
 
 # Qt generated files.
 qt5_wrap_cpp(LOCAL_QT_GENERATED_MOC_FILES ${LOCAL_QT_HEADERS})
-qt5_add_resources(LOCAL_QT_GENERATED_QRC_FILES ${LOCAL_QT_SOURCE_QRC_FILES})
 qt5_wrap_ui(LOCAL_QT_GENERATED_UI_FILES ${LOCAL_QT_SOURCE_UI_FILES})
 
 # Group files.
 source_group("Generated Files\\Moc Files" FILES ${LOCAL_QT_GENERATED_MOC_FILES})
-source_group("Generated Files\\Qrc Files" FILES ${LOCAL_QT_GENERATED_QRC_FILES})
 source_group("Generated Files\\UI Files" FILES ${LOCAL_QT_GENERATED_UI_FILES})
-source_group("Resource Files" FILES ${LOCAL_QT_SOURCE_QRC_FILES})
 source_group("UI Files" FILES ${LOCAL_QT_SOURCE_UI_FILES})
 
 
@@ -128,7 +126,6 @@ set(LOCAL_QT_FILES
 	${LOCAL_QT_HEADER_FILES}
 	${LOCAL_QT_SOURCE_FILES}
 	${LOCAL_QT_GENERATED_MOC_FILES}
-	${LOCAL_QT_GENERATED_QRC_FILES}
 	${LOCAL_QT_GENERATED_UI_FILES}
 )
 
@@ -136,7 +133,6 @@ set(LOCAL_QT_FILES
 set(LOCAL_INCLUDES
 	${CMAKE_CURRENT_BINARY_DIR}
     ${LOCAL_PATH_HEADER}
-    ${LOCAL_PATH_GROUP_HEADER}
     ${PROJECT_INCLUDE_DIR}
     ${NDXLIB_INCLUDE_DIR}
 )

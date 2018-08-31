@@ -1,0 +1,96 @@
+# ************************************************************
+# Global ignore files
+# ************************************************************
+# ====================
+# Global
+# ====================
+*~
+*.autosave
+*.bak
+*.backup
+*.layout
+*.log
+*.orig
+*.save
+*.so
+*.stackdump
+*.suo
+*.swp
+*.tmp
+*.user
+*.user*
+*.vscode
+._*
+.Spotlight-V100
+.Trashes
+.DS_Store
+.DS_Store?
+.vscode
+ehthumbs.db
+Thumbs.db
+
+
+# ====================
+# Object / Project Files
+# ====================
+*.moc
+*.ncb
+*.o
+*.obj
+*.pdb
+*.pro.user*
+*.suo
+
+
+# ====================
+# Android / Java
+# ====================
+*.apk
+*.ap_
+*.dex
+*.class
+*.iml
+/*/build
+build
+bin/
+gen/
+out/
+captures
+local.properties
+.gradle
+.externalNativeBuild
+.navigation/
+
+# IntelliJ.
+.idea/dictionaries
+.idea/libraries
+.idea/gradle.xml
+.idea/tasks.xml
+.idea/workspace.xml
+
+# Crashlytics configurations.
+com_crashlytics_export_strings.xml
+
+# Google Services (e.g. APIs or Firebase).
+google-services.json
+
+
+# ====================
+# Python
+# ====================
+__pycache__
+*.pyc
+
+
+# ************************************************************
+# Allows files
+# ************************************************************
+!*vcxproj.user
+
+
+# ************************************************************
+# Specific ignore
+# ************************************************************
+Tmp
+Temp
+

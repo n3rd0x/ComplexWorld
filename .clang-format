@@ -36,7 +36,7 @@ BreakBeforeBraces: Custom
 BreakBeforeTernaryOperators: 'true'
 BreakConstructorInitializersBeforeComma: 'false'
 BreakStringLiterals: 'true'
-ColumnLimit: '80'
+ColumnLimit: '120'
 ConstructorInitializerAllOnOneLineOrOnePerLine: 'true'
 ConstructorInitializerIndentWidth: '0'
 ContinuationIndentWidth: '4'
@@ -55,7 +55,7 @@ ObjCSpaceAfterProperty: 'false'
 ObjCSpaceBeforeProtocolList: 'false'
 PointerAlignment: Left
 ReflowComments: 'true'
-SortIncludes: 'true'
+SortIncludes: 'false'
 SpaceAfterCStyleCast: 'false'
 SpaceBeforeAssignmentOperators: 'true'
 SpaceBeforeParens: Never

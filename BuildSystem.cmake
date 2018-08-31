@@ -30,19 +30,18 @@ set(PROJECT_PATH_CMAKE_TEMPLATE    "${PROJECT_PATH_CMAKE_PUBLIC}/Templates")
 
 # Include necessary sub-modules.
 set(CMAKE_MODULE_PATH
-    "${CMAKE_CURRENT_SOURCE_DIR}/Source/CMake"
+    "${CMAKE_CURRENT_SOURCE_DIR}/Sources/CMake"
     "${PROJECT_PATH_CMAKE_PUBLIC}"
     "${PROJECT_PATH_CMAKE_PUBLIC}/Packages"
-    "${PROJECT_PATH_CMAKE_PUBLIC}/Third-Parties/Ogre"
     "${PROJECT_PATH_CMAKE_PUBLIC}/Utilities"
 )
 
 # Include necessary modules. 
+include(CheckCXXCompilerFlag)
 include(CMakeParseArguments)
 include(DebugUtils)
 include(BuildUtils)
 include(OgreUtils)
 include(PackageUtils)
-include(PreprocessorUtils)
 include(QtUtils)
 

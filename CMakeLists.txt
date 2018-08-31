@@ -37,10 +37,10 @@ include("${CMAKE_CURRENT_SOURCE_DIR}/BuildSystem.cmake")
 # ************************************************************
 initialise_project(
     "ComplextWorld"
-    Description "Research project."
+    Description "Research and educational project."
     Major 0
     Minor 0
-    Patch 1
+    Patch 2
 )
 
 
@@ -58,7 +58,7 @@ initialise_project_path()
 initialise_project_compiler_flags()
 
 # Initialize other paths
-set(PROJECT_PATH_SOURCE "${PROJECT_PATH_ROOT}/Source")
+set(PROJECT_PATH_SOURCE "${PROJECT_PATH_ROOT}/Sources")
 set(PROJECT_PATH_DATA   "${PROJECT_PATH_ROOT}/Data")
 
 # Include common files.
@@ -91,6 +91,7 @@ endif()
 # ************************************************************
 # Necessary dependencies.
 find_package(CustomPoco)
+find_package(CustomOGRE)
     
 # Require Qt
 if(SearchQt)
@@ -122,6 +123,9 @@ set(PROJECT_LIBRARIES
 )
 
 # Adding dependencies.
+package_copy_binary_from_target(OGRE)
+package_copy_binary_from_target(OGRE_Bites)
+package_copy_binary_from_target(OGRE_Overlay)
 package_copy_binary_from_target(POCO_FOUNDATION)
 
 if(SearchQt)
@@ -148,4 +152,4 @@ endif()
 # ************************************************************
 message(STATUS "")
 message(STATUS "Sub Projects:")
-add_subdirectory("Source")
+add_subdirectory("Sources")

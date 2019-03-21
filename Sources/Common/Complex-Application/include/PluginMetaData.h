@@ -44,16 +44,9 @@ public:
 
     /**
      * Initialise meta data.
-  * @param meta Meta data to parse.
+     * @param meta Meta data to parse.
      */
     PluginMetaData(const QJsonObject& meta);
-
-
-    /**
-     * Copy constructor.
-     * @param cpy MetaData to copy from.
-     */
-    PluginMetaData(const PluginMetaData& cpy);
 
 
     /**

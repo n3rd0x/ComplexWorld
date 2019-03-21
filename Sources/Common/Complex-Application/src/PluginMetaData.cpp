@@ -44,14 +44,7 @@ PluginMetaData::PluginMetaData(const QJsonObject& meta) {
 }
 
 
-PluginMetaData::PluginMetaData(const PluginMetaData& cpy) {
-    mDescription = cpy.mDescription;
-    mName        = cpy.mName;
-}
-
-
-QString PluginMetaData::getString(
-    const QJsonObject& meta, const QString& keyword) {
+QString PluginMetaData::getString(const QJsonObject& meta, const QString& keyword) {
     const QJsonValue& value = meta.value(keyword);
     if(value.isString()) {
         return value.toString();

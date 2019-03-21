@@ -25,52 +25,47 @@
 #include "Plugin.h"
 #include <ui_BubbleSort.h>
 
+// ndxLibrary includes
+#include <ndxPrerequisites.h>
+
 
 namespace ndx {
 
 
-// ************************************************************
-// Class Forward Declarations
-// ************************************************************
-class NumberGenerator;
-
-
-
- 
 /**
- * Echo form sample.
+ * Bubble sort sample.
  */
 class BubbleSort : public Plugin, public Ui::BubbleSort {
-	Q_OBJECT
-	Q_PLUGIN_METADATA(IID "ndx.Algorithms.BubbleSort" FILE "BubbleSort.json")
-	Q_INTERFACES(ndx::Plugin);
+    Q_OBJECT
+    Q_PLUGIN_METADATA(IID "ndx.Algorithms.BubbleSort" FILE "BubbleSort.json")
+    Q_INTERFACES(ndx::Plugin);
 
 public:
-	// ************************************************************
-	// Member Declarations
-	// ************************************************************
+    // ************************************************************
+    // Member Declarations
+    // ************************************************************
     /**
      * Default constructor.
      */
-	BubbleSort();
-    
-	
-	/**
-	 * Default destructor.
-	 */
-	~BubbleSort();
+    BubbleSort();
 
 
-	/**
-	 * Shutdown the plug-in.
-	 */
+    /**
+     * Default destructor.
+     */
+    ~BubbleSort();
+
+
+    /**
+     * Shutdown the plug-in.
+     */
     void shutDown();
 
 
-	/**
-	 * Start up the plug-in.
-	 * @return True on success.
-	 */
+    /**
+     * Start up the plug-in.
+     * @return True on success.
+     */
     bool startUp(QWidget* parent);
 
 
@@ -356,10 +351,10 @@ protected slots:
     void tabChanged(int idx);
 
 
-}; // End class BubbleSort
+};  // End class BubbleSort
 
 
-} // End namespace ndx
+}  // End namespace ndx
 
 
-#endif // _BubbleSort_h_
+#endif  // _BubbleSort_h_

@@ -100,7 +100,7 @@ protected:
 // ************************************************************
 // Plug-in Declarations
 // ************************************************************
-Q_DECLARE_INTERFACE(ndx::Plugin, "ndx.Algorithms.Plugin")
+Q_DECLARE_INTERFACE(ndx::Plugin, "ndx.ComplexWorld.Plugin")
 
 
 #endif  // _Plugin_h_

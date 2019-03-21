@@ -28,41 +28,41 @@
 
 namespace ndx {
 
- 
+
 /**
- * Echo form sample.
+ * AI steering bevahiourss sample.
  */
 class PluginWidget : public Plugin, public Ui::PluginWidget {
-	Q_OBJECT
-	Q_PLUGIN_METADATA(IID "ndx.Algorithms.SteeringBehaviours" FILE "PluginWidget.json")
-	Q_INTERFACES(ndx::Plugin);
+    Q_OBJECT
+    Q_PLUGIN_METADATA(IID "ndx.PGAI.SteeringBehaviours" FILE "PluginWidget.json")
+    Q_INTERFACES(ndx::Plugin);
 
 public:
-	// ************************************************************
-	// Member Declarations
-	// ************************************************************
+    // ************************************************************
+    // Member Declarations
+    // ************************************************************
     /**
      * Default constructor.
      */
-	PluginWidget();
-    
-	
-	/**
-	 * Default destructor.
-	 */
-	~PluginWidget();
+    PluginWidget();
 
 
-	/**
-	 * Shutdown the plug-in.
-	 */
+    /**
+     * Default destructor.
+     */
+    ~PluginWidget();
+
+
+    /**
+     * Shutdown the plug-in.
+     */
     void shutDown();
 
 
-	/**
-	 * Start up the plug-in.
-	 * @return True on success.
-	 */
+    /**
+     * Start up the plug-in.
+     * @return True on success.
+     */
     bool startUp(QWidget* parent);
 
 
@@ -78,10 +78,10 @@ private:
     static const std::string TAG;
 
 
-}; // End class PluginWidget
+};  // End class PluginWidget
 
 
-} // End namespace ndx
+}  // End namespace ndx
 
 
-#endif // _PluginWidget_h_
+#endif  // _PluginWidget_h_

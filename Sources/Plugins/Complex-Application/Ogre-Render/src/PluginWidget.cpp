@@ -24,7 +24,7 @@
 #include "ndxLogManager.h"
 
 // Qt includes
-#include<QtGui>
+#include <QtGui>
 
 
 namespace ndx {
@@ -33,7 +33,7 @@ namespace ndx {
 // ************************************************************
 // Static Member Implementations
 // ************************************************************
-const std::string PluginWidget::TAG = "SteeringBehaviours";
+const std::string PluginWidget::TAG = "OgreRender";
 
 
 
@@ -51,18 +51,18 @@ PluginWidget::~PluginWidget() {
 
 void PluginWidget::shutDown() {
     LOG_DEBUG_LEVEL_PREFIX("Shutdown up plug-in.", TAG);
-	Plugin::shutDown();
+    Plugin::shutDown();
 }
 
 
 bool PluginWidget::startUp(QWidget* parent) {
     LOG_DEBUG_LEVEL_PREFIX("Starting up plug-in.", TAG);
-	Plugin::startUp(parent);
+    Plugin::startUp(parent);
 
-	// Setup objects from the UI form.
-	setupUi(this);
+    // Setup objects from the UI form.
+    setupUi(this);
     return true;
 }
 
 
-} // End namespace ndx
+}  // End namespace ndx

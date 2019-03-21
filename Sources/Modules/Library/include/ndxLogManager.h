@@ -130,8 +130,7 @@ protected:
      * @param prefix Prefix to apply.
      * @return Message with the prefix.
      */
-    std::string applyPrefix(
-        const std::string& msg, const std::string& prefix = "");
+    std::string applyPrefix(const std::string& msg, const std::string& prefix = "");
 
 
     /**

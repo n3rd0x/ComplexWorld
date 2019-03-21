@@ -30,7 +30,7 @@ namespace ndx {
 
 
 /**
- * Echo form sample.
+ * OGRE render sample.
  */
 class PluginWidget : public Plugin, public Ui::PluginWidget {
     Q_OBJECT

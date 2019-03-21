@@ -1,0 +1,6 @@
+{
+    "Name"        : "Kalman Filter",
+    "Category"    : "Algorithms & Data Structures",
+    "Description" : "Kalman filter algorithm.",
+    "Version"     : "1.0.0"
+}

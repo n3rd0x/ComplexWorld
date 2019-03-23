@@ -21,7 +21,7 @@
 #include "Controller.h"
 
 // Qt includes
-#include<QtGui>
+#include <QtGui>
 
 
 namespace ndx {
@@ -39,14 +39,19 @@ Controller::Controller(QWidget* parent) : QWidget(parent) {
     mMinimumSpeed = 2000;
 
     // Make connections.
-    connect(mButtonStart,   &QPushButton::clicked, this, &Controller::startClicked);
-    connect(mButtonStop,    &QPushButton::clicked, this, &Controller::stopClicked);
+    connect(mButtonStart, &QPushButton::clicked, this, &Controller::startClicked);
+    connect(mButtonStop, &QPushButton::clicked, this, &Controller::stopClicked);
     connect(mButtonForward, &QPushButton::clicked, this, &Controller::forwardClicked);
+
+    // Enable buttons.
+    toggleButtons(true);
 }
 
 
 Controller::~Controller() {
-    if(mTimer) { delete mTimer; }
+    if(mTimer) {
+        delete mTimer;
+    }
 }
 
 
@@ -90,4 +95,4 @@ void Controller::toggleButtons(const bool state) {
 }
 
 
-} // End namespace ndx
+}  // End namespace ndx

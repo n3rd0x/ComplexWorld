@@ -49,6 +49,7 @@ set(LOCAL_HEADER_FILES
 )
 
 set(LOCAL_QT_HEADER_FILES
+    "${LOCAL_PATH_HEADER}/ChartView.h"
     "${LOCAL_PATH_HEADER}/KalmanFilter.h"
 )
 
@@ -63,6 +64,7 @@ set(LOCAL_SOURCE_FILES
 )
 
 set(LOCAL_QT_SOURCE_FILES
+    "${LOCAL_PATH_SOURCE}/ChartView.cpp"
     "${LOCAL_PATH_SOURCE}/KalmanFilter.cpp"
 )
 
@@ -88,11 +90,11 @@ enable_complex_application_qt_common_widget_files()
 # ************************************************************
 # Group Qt headers and sources.
 set(LOCAL_QT_HEADERS
-	${LOCAL_QT_HEADER_FILES}
+    ${LOCAL_QT_HEADER_FILES}
 )
 
 set(LOCAL_QT_SOURCES
-	${LOCAL_QT_SOURCE_FILES}
+    ${LOCAL_QT_SOURCE_FILES}
 )
 
 # Qt generated files.
@@ -125,16 +127,16 @@ set(LOCAL_SOURCES
 
 # Project Qt files.
 set(LOCAL_QT_FILES
-	${LOCAL_QT_HEADER_FILES}
-	${LOCAL_QT_SOURCE_FILES}
-	${LOCAL_QT_GENERATED_MOC_FILES}
-	${LOCAL_QT_GENERATED_QRC_FILES}
-	${LOCAL_QT_GENERATED_UI_FILES}
+    ${LOCAL_QT_HEADER_FILES}
+    ${LOCAL_QT_SOURCE_FILES}
+    ${LOCAL_QT_GENERATED_MOC_FILES}
+    ${LOCAL_QT_GENERATED_QRC_FILES}
+    ${LOCAL_QT_GENERATED_UI_FILES}
 )
 
 # Local include directories.
 set(LOCAL_INCLUDES
-	${CMAKE_CURRENT_BINARY_DIR}
+    ${CMAKE_CURRENT_BINARY_DIR}
     ${LOCAL_PATH_HEADER}
     ${LOCAL_PATH_GROUP_HEADER}
     ${PROJECT_INCLUDE_DIR}
@@ -172,7 +174,7 @@ set_target_properties(
 )
 
 # Use Qt modules.
-qt5_use_modules(${PROJECT_NAME} Core Gui Widgets)
+qt5_use_modules(${PROJECT_NAME} Charts Core Gui Widgets)
 
 # Copy project templates.
 copy_project_template()

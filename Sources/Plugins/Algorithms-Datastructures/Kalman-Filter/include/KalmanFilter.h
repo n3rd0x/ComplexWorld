@@ -23,13 +23,19 @@
 
 // Local includes
 #include "Plugin.h"
+#include "ChartView.h"
 #include <ui_KalmanFilter.h>
 
 // ndxLibrary includes
 #include <ndxPrerequisites.h>
+#include <ndxNumberGenerator.h>
 
 // STL includes
 #include <string>
+
+// Qt includes
+#include <QList>
+#include <QScopedPointer>
 
 
 namespace ndx {
@@ -44,6 +50,23 @@ class KalmanFilter : public Plugin, public Ui::KalmanFilter {
     Q_INTERFACES(ndx::Plugin);
 
 public:
+    // ************************************************************
+    // Strucuture Declarations
+    // ************************************************************
+    struct Data {
+        qint32 index = -1;
+        double eEst  = 0.0;
+        double eEstP = 0.0;
+        double eMea  = 0.0;
+        double vEst  = 0.0;
+        double vEstP = 0.0;
+        double vMea  = 0.0;
+        double KG    = 0.0;
+    };
+
+
+
+
     // ************************************************************
     // Member Declarations
     // ************************************************************
@@ -77,12 +100,47 @@ protected:
     // Member Declarations
     // ************************************************************
     /**
+     * @brief References.
+     */
+    qint32 mCurrentIndex;
+    QList<Data> mDataList;
+    QScopedPointer<NumberGenerator> mNumberGenerator;
+    double mGlobalRangeLow;
+    double mGlobalRangeHigh;
+    double mGlobalSize;
+
+
+    /**
      * @brief Logging tag.
      */
     static const std::string TAG;
 
 
 protected slots:
+    /**
+     * @brief Clear.
+     */
+    void clear();
+
+
+    /**
+     * @brief Generate measurement values.
+     */
+    void generateMeaValues();
+
+
+    /**
+     * @brief Proceed calcualtion.
+     */
+    void proceedCalcualtion();
+
+
+    /**
+     * @brief Restart calculation.
+     */
+    void restartCalculation();
+
+
     /**
      * Widget changed in the tab.
      */

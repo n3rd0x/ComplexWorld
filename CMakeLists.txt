@@ -40,7 +40,7 @@ initialise_project(
     Description "Research and educational project."
     Major 0
     Minor 0
-    Patch 2
+    Patch 3
 )
 
 
@@ -92,7 +92,7 @@ endif()
 # Necessary dependencies.
 find_package(CustomPoco)
 find_package(CustomOGRE)
-    
+
 # Require Qt
 if(SearchQt)
     # Enable auto linking to 'qtmain' (new for Qt5).
@@ -103,12 +103,12 @@ if(SearchQt)
         set(QT_DEPLOY_LIBRARY ON CACHE BOOL "Deloy Qt libraries." FORCE)
     endif()
 
-    find_package(CustomQt5 COMPONENTS "Qt5Core;Qt5Gui;Qt5Widgets")
-    
+    find_package(CustomQt5 COMPONENTS "Qt5Core;Qt5Charts;Qt5Gui;Qt5Widgets")
+
     # GLM (0.9.4.6)
     find_package(CustomGLM)
 endif()
- 
+
 # Initialise the dependencies based on the SDK.
 initialise_project_sdk_library()
 
@@ -143,10 +143,10 @@ endif()
 # Resources
 # ************************************************************
 
-    
 
-    
-    
+
+
+
 # ************************************************************
 # Sub Projects
 # ************************************************************

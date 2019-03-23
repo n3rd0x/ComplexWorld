@@ -102,6 +102,7 @@ void PluginManager::unload() {
         mCurrentPlugin.mLoader->unload();
         mCurrentPlugin.mLoader = nullptr;
         mCurrentPlugin.mPlugin = nullptr;
+        LOG_DEBUG_LEVEL_PREFIX("Successfully Unload the plug-in.", "PluginManager");
     }
 }
 

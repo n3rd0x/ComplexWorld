@@ -21,7 +21,6 @@
 #include "KalmanFilter.h"
 
 // ndxLib includes
-#include "ndxNumberGenerator.h"
 #include "ndxLogManager.h"
 
 // Qt includes
@@ -51,6 +50,46 @@ KalmanFilter::KalmanFilter() : Plugin() {
 
 
 KalmanFilter::~KalmanFilter() {
+    mNumberGenerator.reset();
+    LOG_DEBUG_LEVEL_PREFIX("Destructor.", TAG);
+}
+
+
+void KalmanFilter::clear() {
+    mDataList.clear();
+    mMeaList->clear();
+    mChartView->clear();
+    mCurrentIndex    = 0;
+    mGlobalRangeLow  = 10000;
+    mGlobalRangeHigh = -10000;
+    mGlobalSize      = 0;
+}
+
+
+void KalmanFilter::generateMeaValues() {
+    if(mNum->value() == 0) {
+        return;
+    }
+    restartCalculation();
+
+    // Update values.
+    mGlobalSize += mNum->value();
+    if(mGlobalRangeLow > mRangeLow->value()) {
+        mGlobalRangeLow = mRangeLow->value();
+    }
+    if(mGlobalRangeHigh < mRangeHigh->value()) {
+        mGlobalRangeHigh = mRangeHigh->value();
+    }
+
+    // Generate random numbers.
+    mNumberGenerator->setRange(mRangeLow->value(), mRangeHigh->value());
+    for(auto i = 0; i < mNum->value(); i++) {
+        auto value = QString::number(mNumberGenerator->generate(), 'g', 2);
+        mMeaList->addItem(value);
+    }
+
+    // Set chart range and group title.
+    mChartView->setRange(mGlobalRangeLow, mGlobalRangeHigh, mGlobalSize);
 }
 
 
@@ -66,73 +105,86 @@ bool KalmanFilter::startUp(QWidget* parent) {
     Plugin::startUp(parent);
     setupUi(this);
 
+    clear();
     mTabWidget->setCurrentIndex(0);
-
-    double eEst  = 2.0;
-    double eEstP = 0.0;
-    double eMea  = 4.0;
-    double KG    = 0.5;
-    double est   = 68.0;
-    double estP  = 0.0;
-    double mea   = 0.0;
-
-    auto random = new NumberGenerator();
-    random->setRange(50, 80);
-
-    int num    = 10000;
-    double avg = 0.0;
-
-    std::vector<double> data;
-    for(auto i = 0; i < num; i++) {
-        data.push_back(random->generate());
-        avg += data.back();
-    }
-
-    random->setRange(70, 90);
-    for(auto i = 0; i < num; i++) {
-        data.push_back(random->generate());
-        avg += data.back();
-    }
-    est = data.front();
-
-    for(unsigned int i = 0; i < data.size(); i++) {
-        std::stringstream ss;
-
-        mea   = data[i];
-        eEstP = eEst;
-        estP  = est;
-
-        ss << "Calculation:" << std::endl;
-        ss << "mea:   " << mea << std::endl;
-        ss << "eMea:  " << eMea << std::endl;
-        ss << "estP:  " << estP << std::endl;
-        ss << "eEstP: " << eEstP << std::endl;
-        ss << "----------" << std::endl;
-
-        // Kalman gain.
-        KG = eEst / (eEst + eMea);
-
-        // Estimate.
-        est = estP + KG * (mea - estP);
-
-        // Error estimate.
-        eEst = (1 - KG) * eEstP;
-
-        ss << "KG:    " << KG << std::endl;
-        ss << "est:   " << est << std::endl;
-        ss << "eEst:  " << eEst << std::endl;
-        LOG_DEBUG_LEVEL_PREFIX(ss.str(), TAG);
-    }
-
-    avg = avg / (num * 2);
-    LOG_DEBUG_LEVEL_PREFIX("Avg: " + std::to_string(avg), TAG);
+    mNumberGenerator.reset(new NumberGenerator());
+    mChartView->setRange(mRangeLow->value(), mRangeHigh->value(), mNum->value());
 
 
     // ----------------------------------------
     // Connections
     // ----------------------------------------
+    connect(mButtonClear, &QPushButton::clicked, this, &KalmanFilter::clear);
+    connect(mButtonGenerate, &QPushButton::clicked, this, &KalmanFilter::generateMeaValues);
+    connect(mButtonRestart, &QPushButton::clicked, this, &KalmanFilter::restartCalculation);
+    connect(mViewController->mButtonForward, &QPushButton::clicked, this, &KalmanFilter::proceedCalcualtion);
+    connect(mViewController->mTimer, &QTimer::timeout, this, &KalmanFilter::proceedCalcualtion);
     connect(mTabWidget, &QTabWidget::currentChanged, this, &KalmanFilter::tabChanged);
     return true;
+}
+
+
+void KalmanFilter::proceedCalcualtion() {
+    bool proceed = true;
+    if(mCurrentIndex < 0) {
+        proceed = false;
+    }
+    if(mCurrentIndex >= mMeaList->count()) {
+        proceed = false;
+    }
+
+    if(!proceed) {
+        mViewController->stopClicked();
+        return;
+    }
+
+    // Get current measurement value from the list.
+    auto mea = mMeaList->item(mCurrentIndex)->data(Qt::DisplayRole).toDouble();
+
+    // Store data.
+    Data data;
+    data.index = mCurrentIndex;
+    data.eMea  = mInit_eMea->value();
+    data.vMea  = mea;
+
+    // Find previous data.
+    if(mCurrentIndex > 0) {
+        auto prev  = mDataList[mCurrentIndex - 1];
+        data.eEst  = prev.eEst;
+        data.eEstP = prev.eEst;
+        data.vEst  = prev.vEst;
+        data.vEstP = prev.vEst;
+    }
+    else {
+        data.eEst  = data.eMea / 2.0;
+        data.eEstP = data.eEst;
+        data.vEst  = data.vMea;
+        data.vEstP = data.vEst;
+    }
+
+    // ----------------------------------------
+    // Kalman Filter Calculation
+    // ----------------------------------------
+    // Kalman gain.
+    data.KG = data.eEst / (data.eEst + data.eMea);
+
+    // Estimate value.
+    data.vEst = data.vEstP + (data.KG * (data.vMea - data.vEstP));
+
+    // Error estimate value.
+    data.eEst = (1 - data.KG) * data.eEstP;
+
+    // Process to next iteration.
+    mChartView->add(data.vMea, data.vEst, mCurrentIndex);
+    mDataList.append(data);
+    mCurrentIndex++;
+}
+
+
+void KalmanFilter::restartCalculation() {
+    mCurrentIndex = 0;
+    mChartView->clear();
+    mDataList.clear();
 }
 
 

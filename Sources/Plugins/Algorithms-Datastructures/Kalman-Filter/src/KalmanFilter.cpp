@@ -118,16 +118,37 @@ void KalmanFilter::itemDoubleClicked(QListWidgetItem* item) {
     auto idx  = mMeaList->currentRow();
     auto data = mDataList[idx];
 
-    mValue_eEstP->setValue(data.eEstP);
     mValue_eMea->setValue(data.eMea);
-    mValue_vEstP->setValue(data.vEstP);
     mValue_vMea->setValue(data.vMea);
+    mValue_eEstP->setValue(data.eEstP);
+    mValue_vEstP->setValue(data.vEstP);
     auto KG   = calculateKalmanGain(data.eEstP, data.eMea);
     auto vEst = calculateEstimate(KG, data.vMea, data.vEstP);
     auto eEst = calculateErrorEstimate(KG, data.eEstP);
     mValue_eEst->setValue(eEst);
     mValue_vEst->setValue(vEst);
     mValue_KG->setValue(KG);
+
+    LOG_INFO_LEVEL_PREFIX("Kalman Filter Calculation:", TAG);
+    LOG_INFO_LEVEL_PREFIX("---------- START ----------", TAG);
+    LOG_INFO_LEVEL_PREFIX("vMea:  " + std::to_string(data.vMea), TAG);
+    LOG_INFO_LEVEL_PREFIX("eMea:  " + std::to_string(data.eMea), TAG);
+    LOG_INFO_LEVEL_PREFIX("eEstP: " + std::to_string(data.eEstP), TAG);
+    LOG_INFO_LEVEL_PREFIX("vEstP: " + std::to_string(data.vEstP), TAG);
+    LOG_INFO_LEVEL_PREFIX("Kalman Gain: KG = eEst / (eEst + eMea)", TAG);
+    LOG_INFO_LEVEL_PREFIX(
+        std::to_string(KG) + " = " + std::to_string(data.eEstP) + " / (" + std::to_string(data.eEstP) + " + "
+            + std::to_string(data.eMea) + ")",
+        TAG);
+    LOG_INFO_LEVEL_PREFIX("Estimate: vEst = vEstP + (KG * (vMea - vEstP))", TAG);
+    LOG_INFO_LEVEL_PREFIX(
+        std::to_string(vEst) + " = " + std::to_string(data.vEstP) + " + (" + std::to_string(KG) + " * ("
+            + std::to_string(data.vMea) + " - " + std::to_string(data.vEstP) + "))",
+        TAG);
+    LOG_INFO_LEVEL_PREFIX("Error Estimate: eEst = (1 - KG) * eEstP", TAG);
+    LOG_INFO_LEVEL_PREFIX(
+        std::to_string(eEst) + " = (1 - " + std::to_string(KG) + ") * " + std::to_string(data.eEstP), TAG);
+
 
     // Verify, it should be the same.
     if(KG != data.KG) {
@@ -142,6 +163,8 @@ void KalmanFilter::itemDoubleClicked(QListWidgetItem* item) {
         LOG_CRITICAL_LEVEL_PREFIX("ERROR: Mismatch error estimate value.", TAG);
         LOG_CRITICAL_LEVEL_PREFIX("Calc: " + std::to_string(eEst) + " Data: " + std::to_string(data.eEst), TAG);
     }
+
+    LOG_INFO_LEVEL_PREFIX("---------- STOP  ----------", TAG);
 }
 
 
@@ -204,23 +227,19 @@ void KalmanFilter::proceedCalcualtion() {
     // Find previous data.
     if(mCurrentIndex > 0) {
         auto prev  = mDataList[mCurrentIndex - 1];
-        data.eEst  = prev.eEst;
         data.eEstP = prev.eEst;
-        data.vEst  = prev.vEst;
         data.vEstP = prev.vEst;
     }
     else {
-        data.eEst  = data.eMea / 2.0;
-        data.eEstP = data.eEst;
-        data.vEst  = data.vMea;
-        data.vEstP = data.vEst;
+        data.eEstP = data.eMea / 2.0;
+        data.vEstP = data.vMea - data.eMea;
     }
 
     // ----------------------------------------
     // Kalman Filter Calculation
     // ----------------------------------------
     // Kalman gain.
-    data.KG = calculateKalmanGain(data.eEst, data.eMea);
+    data.KG = calculateKalmanGain(data.eEstP, data.eMea);
 
     // Estimate value.
     data.vEst = calculateEstimate(data.KG, data.vMea, data.vEstP);

@@ -94,6 +94,14 @@ public:
     void setRange(const double low, const double high, const int size);
 
 
+public slots:
+    /**
+     * @brief Show measurement.
+     * @param state State to set.
+     */
+    void showMeasurement(bool state);
+
+
 protected:
     // ************************************************************
     // Member Declarations

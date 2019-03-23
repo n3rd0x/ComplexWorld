@@ -100,6 +100,34 @@ protected:
     // Member Declarations
     // ************************************************************
     /**
+     * @brief Calculate error estimate.
+     * @param KG Kalman gain value.
+     * @param eEstP Previous error estimate.
+     * @return New error estimate value.
+     */
+    double calculateErrorEstimate(const double KG, const double eEstP);
+
+
+    /**
+     * @brief Calculate estimate.
+     * @param KG Kalman gain value.
+     * @param vMea Measurement value.
+     * @param vEstP Previous estimate value.
+     * @return New estimate value.
+     */
+    double calculateEstimate(const double KG, const double vMea, const double vEstP);
+
+
+    /**
+     * @brief Calculate kalman gain.
+     * @param eEst Error estimate.
+     * @param eMea Error measurement.
+     * @return Kalman gain value.
+     */
+    double calculateKalmanGain(const double eEst, const double eMea);
+
+
+    /**
      * @brief References.
      */
     qint32 mCurrentIndex;
@@ -127,6 +155,13 @@ protected slots:
      * @brief Generate measurement values.
      */
     void generateMeaValues();
+
+
+    /**
+     * @brief Item double clicked.
+     * @param item Selected item.
+     */
+    void itemDoubleClicked(QListWidgetItem* item);
 
 
     /**

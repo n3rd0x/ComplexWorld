@@ -86,7 +86,7 @@ void ChartView::setRange(const double low, const double high, const int size) {
     chart()->removeAllSeries();
     mSeriesEst = nullptr;
     mSeriesMea = nullptr;
-    if(size <= 40) {
+    if(size <= 100) {
         mSeriesEst = new QLineSeries();
         mSeriesEst->setName("Estimate");
 
@@ -106,6 +106,13 @@ void ChartView::setRange(const double low, const double high, const int size) {
     chart()->setDropShadowEnabled(false);
     chart()->axisY()->setRange(low - 2.0, high + 2.0);
     chart()->axisX()->setRange(-1, size + 1);
+}
+
+
+void ChartView::showMeasurement(bool state) {
+    if(mSeriesMea) {
+        state ? mSeriesMea->show() : mSeriesMea->hide();
+    }
 }
 
 

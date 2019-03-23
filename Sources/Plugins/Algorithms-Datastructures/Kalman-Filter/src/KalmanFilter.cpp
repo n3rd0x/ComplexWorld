@@ -25,10 +25,10 @@
 
 // Qt includes
 #include <QtGui>
+#include <QMessageBox>
 
 // STL includes
 #include <sstream>
-#include <vector>
 
 
 namespace ndx {
@@ -55,6 +55,21 @@ KalmanFilter::~KalmanFilter() {
 }
 
 
+double KalmanFilter::calculateErrorEstimate(const double KG, const double eEstP) {
+    return (1.0 - KG) * eEstP;
+}
+
+
+double KalmanFilter::calculateEstimate(const double KG, const double vMea, const double vEstP) {
+    return vEstP + (KG * (vMea - vEstP));
+}
+
+
+double KalmanFilter::calculateKalmanGain(const double eEst, const double eMea) {
+    return eEst / (eEst + eMea);
+}
+
+
 void KalmanFilter::clear() {
     mDataList.clear();
     mMeaList->clear();
@@ -67,7 +82,8 @@ void KalmanFilter::clear() {
 
 
 void KalmanFilter::generateMeaValues() {
-    if(mNum->value() == 0) {
+    if(mRangeLow->value() > mRangeHigh->value()) {
+        QMessageBox::warning(this, tr("Warning!"), tr("Range (low) must be less than range (high)."));
         return;
     }
     restartCalculation();
@@ -90,6 +106,42 @@ void KalmanFilter::generateMeaValues() {
 
     // Set chart range and group title.
     mChartView->setRange(mGlobalRangeLow, mGlobalRangeHigh, mGlobalSize);
+    mChartView->showMeasurement(mShowMea->isChecked());
+}
+
+
+void KalmanFilter::itemDoubleClicked(QListWidgetItem* item) {
+    if(mDataList.count() <= 1) {
+        return;
+    }
+
+    auto idx  = mMeaList->currentRow();
+    auto data = mDataList[idx];
+
+    mValue_eEstP->setValue(data.eEstP);
+    mValue_eMea->setValue(data.eMea);
+    mValue_vEstP->setValue(data.vEstP);
+    mValue_vMea->setValue(data.vMea);
+    auto KG   = calculateKalmanGain(data.eEstP, data.eMea);
+    auto vEst = calculateEstimate(KG, data.vMea, data.vEstP);
+    auto eEst = calculateErrorEstimate(KG, data.eEstP);
+    mValue_eEst->setValue(eEst);
+    mValue_vEst->setValue(vEst);
+    mValue_KG->setValue(KG);
+
+    // Verify, it should be the same.
+    if(KG != data.KG) {
+        LOG_CRITICAL_LEVEL_PREFIX("ERROR: Mismatch kalman gain.", TAG);
+        LOG_CRITICAL_LEVEL_PREFIX("Calc: " + std::to_string(KG) + " Data: " + std::to_string(data.KG), TAG);
+    }
+    if(vEst != data.vEst) {
+        LOG_CRITICAL_LEVEL_PREFIX("ERROR: Mismatch estimate value.", TAG);
+        LOG_CRITICAL_LEVEL_PREFIX("Calc: " + std::to_string(vEst) + " Data: " + std::to_string(data.vEst), TAG);
+    }
+    if(eEst != data.eEst) {
+        LOG_CRITICAL_LEVEL_PREFIX("ERROR: Mismatch error estimate value.", TAG);
+        LOG_CRITICAL_LEVEL_PREFIX("Calc: " + std::to_string(eEst) + " Data: " + std::to_string(data.eEst), TAG);
+    }
 }
 
 
@@ -117,9 +169,11 @@ bool KalmanFilter::startUp(QWidget* parent) {
     connect(mButtonClear, &QPushButton::clicked, this, &KalmanFilter::clear);
     connect(mButtonGenerate, &QPushButton::clicked, this, &KalmanFilter::generateMeaValues);
     connect(mButtonRestart, &QPushButton::clicked, this, &KalmanFilter::restartCalculation);
+    connect(mShowMea, &QCheckBox::toggled, mChartView, &ChartView::showMeasurement);
     connect(mViewController->mButtonForward, &QPushButton::clicked, this, &KalmanFilter::proceedCalcualtion);
     connect(mViewController->mTimer, &QTimer::timeout, this, &KalmanFilter::proceedCalcualtion);
     connect(mTabWidget, &QTabWidget::currentChanged, this, &KalmanFilter::tabChanged);
+    connect(mMeaList, &QListWidget::itemDoubleClicked, this, &KalmanFilter::itemDoubleClicked);
     return true;
 }
 
@@ -166,13 +220,13 @@ void KalmanFilter::proceedCalcualtion() {
     // Kalman Filter Calculation
     // ----------------------------------------
     // Kalman gain.
-    data.KG = data.eEst / (data.eEst + data.eMea);
+    data.KG = calculateKalmanGain(data.eEst, data.eMea);
 
     // Estimate value.
-    data.vEst = data.vEstP + (data.KG * (data.vMea - data.vEstP));
+    data.vEst = calculateEstimate(data.KG, data.vMea, data.vEstP);
 
     // Error estimate value.
-    data.eEst = (1 - data.KG) * data.eEstP;
+    data.eEst = calculateErrorEstimate(data.KG, data.eEstP);
 
     // Process to next iteration.
     mChartView->add(data.vMea, data.vEst, mCurrentIndex);

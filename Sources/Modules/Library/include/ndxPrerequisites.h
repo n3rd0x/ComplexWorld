@@ -1,6 +1,6 @@
 /**
  * Complex World - Research & Educational Project
- * Copyright (C) T.Sang Tran aka "Nerdox" <t.sang.tran@outlook.com>
+ * Copyright (C) T.Sang Tran aka "n3rd0x" <nerdox.tranit@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,8 +17,8 @@
  */
 
 
-#ifndef _ndxPrerequisites_h_
-#define _ndxPrerequisites_h_
+#ifndef ndxPrerequisites_h
+#define ndxPrerequisites_h
 
 
 // clang-format off
@@ -81,5 +81,4 @@ namespace ndx {
 // clang-format on
 
 
-#endif  // _ndxPrerequisites_h_
-
+#endif  // ndxPrerequisites_h

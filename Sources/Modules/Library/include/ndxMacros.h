@@ -1,6 +1,6 @@
 /**
  * Complex World - Research & Educational Project
- * Copyright (C) T.Sang Tran aka "Nerdox" <t.sang.tran@outlook.com>
+ * Copyright (C) T.Sang Tran aka "n3rd0x" <nerdox.tranit@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,22 +17,22 @@
  */
 
 
-#ifndef _Macros_h_
-#define _Macros_h_
+#ifndef ndxMacros_h
+#define ndxMacros_h
 
 
 // ************************************************************
 // Cleaning pointers
 // ************************************************************
 #ifndef SAFE_CLEAN_POINTER
-    #define SAFE_CLEAN_POINTER(Var) { \
-        if(Var != nullptr) { \
-            delete Var; \
-            Var = nullptr; \
-        } \
-    }
+    #define SAFE_CLEAN_POINTER(Var) \
+        {                           \
+            if(Var != nullptr) {    \
+                delete Var;         \
+                Var = nullptr;      \
+            }                       \
+        }
 #endif
 
 
-#endif // _Macros_h_
-
+#endif  // ndxMacros_h

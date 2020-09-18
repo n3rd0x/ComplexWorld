@@ -1,6 +1,6 @@
 /**
  * Complex World - Research & Educational Project
- * Copyright (C) T.Sang Tran aka "Nerdox" <t.sang.tran@outlook.com>
+ * Copyright (C) T.Sang Tran aka "n3rd0x" <nerdox.tranit@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,8 +17,8 @@
  */
 
 
-#ifndef _PluginWidget_h_
-#define _PluginWidget_h_
+#ifndef ndxPluginWidget_h
+#define ndxPluginWidget_h
 
 
 // Local includes
@@ -84,4 +84,4 @@ private:
 }  // End namespace ndx
 
 
-#endif  // _PluginWidget_h_
+#endif  // ndxPluginWidget_h

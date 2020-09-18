@@ -1,6 +1,6 @@
 /**
  * Complex World - Research & Educational Project
- * Copyright (C) T.Sang Tran aka "Nerdox" <t.sang.tran@outlook.com>
+ * Copyright (C) T.Sang Tran aka "n3rd0x" <nerdox.tranit@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,8 +17,8 @@
  */
 
 
-#ifndef _MainWindow_h_
-#define _MainWindow_h_
+#ifndef ndxMainWindow_h
+#define ndxMainWindow_h
 
 
 // Qt includes
@@ -206,4 +206,4 @@ private slots:
 }  // End namespace ndx
 
 
-#endif  // _MainWindow_h_
+#endif  // ndxMainWindow_h

@@ -1,6 +1,6 @@
 /**
  * Complex World - Research & Educational Project
- * Copyright (C) T.Sang Tran aka "Nerdox" <t.sang.tran@outlook.com>
+ * Copyright (C) T.Sang Tran aka "n3rd0x" <nerdox.tranit@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,8 +17,8 @@
  */
 
 
-#ifndef _BubbleSort_h_
-#define _BubbleSort_h_
+#ifndef ndxBubbleSort_h
+#define ndxBubbleSort_h
 
 
 // Local includes
@@ -357,4 +357,4 @@ protected slots:
 }  // End namespace ndx
 
 
-#endif  // _BubbleSort_h_
+#endif  // ndxBubbleSort_h

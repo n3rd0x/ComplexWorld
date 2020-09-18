@@ -1,6 +1,6 @@
 /**
  * Complex World - Research & Educational Project
- * Copyright (C) T.Sang Tran aka "Nerdox" <t.sang.tran@outlook.com>
+ * Copyright (C) T.Sang Tran aka "n3rd0x" <nerdox.tranit@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,8 +23,8 @@
  */
 
 
-#ifndef _Telegram_h_
-#define _Telegram_h_
+#ifndef ndxTelegram_h
+#define ndxTelegram_h
 
 
 // Local includes
@@ -48,7 +48,7 @@ public:
     Telegram();
 
 
-    
+
 
 };  // End class Telegram
 
@@ -56,4 +56,4 @@ public:
 }  // End namespace ndx
 
 
-#endif  // _Telegram_h_
+#endif  // ndxTelegram_h

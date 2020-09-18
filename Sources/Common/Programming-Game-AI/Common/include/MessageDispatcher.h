@@ -1,6 +1,6 @@
 /**
  * Complex World - Research & Educational Project
- * Copyright (C) T.Sang Tran aka "Nerdox" <t.sang.tran@outlook.com>
+ * Copyright (C) T.Sang Tran aka "n3rd0x" <nerdox.tranit@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,8 +23,8 @@
  */
 
 
-#ifndef _MessageDispatcher_h_
-#define _MessageDispatcher_h_
+#ifndef ndxMessageDispatcher_h
+#define ndxMessageDispatcher_h
 
 
 // Local includes
@@ -34,7 +34,7 @@ namespace ndx {
 
 
 /**
- * 
+ *
  */
 class MessageDispatcher {
 public:
@@ -61,4 +61,4 @@ public:
 }  // End namespace ndx
 
 
-#endif  // _MessageDispatcher_h_
+#endif  // ndxMessageDispatcher_h

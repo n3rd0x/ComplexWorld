@@ -1,6 +1,6 @@
 /**
  * Complex World - Research & Educational Project
- * Copyright (C) T.Sang Tran aka "Nerdox" <t.sang.tran@outlook.com>
+ * Copyright (C) T.Sang Tran aka "n3rd0x" <nerdox.tranit@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,8 +17,8 @@
  */
 
 
-#ifndef _PluginManager_h_
-#define _PluginManager_h_
+#ifndef ndxPluginManager_h
+#define ndxPluginManager_h
 
 
 // Qt includes
@@ -148,4 +148,4 @@ signals:
 }  // End namespace ndx
 
 
-#endif  // _PluginManager_h_
+#endif  // ndxPluginManager_h

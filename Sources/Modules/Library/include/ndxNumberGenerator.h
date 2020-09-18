@@ -1,6 +1,6 @@
 /**
  * Complex World - Research & Educational Project
- * Copyright (C) T.Sang Tran aka "Nerdox" <t.sang.tran@outlook.com>
+ * Copyright (C) T.Sang Tran aka "n3rd0x" <nerdox.tranit@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,8 +17,8 @@
  */
 
 
-#ifndef _ndxNumberGenerator_h_
-#define _ndxNumberGenerator_h_
+#ifndef ndxNumberGenerator_h
+#define ndxNumberGenerator_h
 
 
 // Local includes
@@ -40,9 +40,9 @@ public:
     // Member Declarations
     // ************************************************************
     /**
-        * Constructor with initialisation of range number.
-        * @param low Low range.
-        * @param high High range.
+     * Constructor with initialisation of range number.
+     * @param low Low range.
+     * @param high High range.
      */
     NumberGenerator(const double low = 0.0, const double high = 100.0);
 
@@ -111,4 +111,4 @@ protected:
 }  // End namespace ndx
 
 
-#endif  // _ndxNumberGenerator_h_
+#endif  // ndxNumberGenerator_h

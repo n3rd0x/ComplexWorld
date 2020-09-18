@@ -1,6 +1,6 @@
 /**
  * Complex World - Research & Educational Project
- * Copyright (C) T.Sang Tran aka "Nerdox" <t.sang.tran@outlook.com>
+ * Copyright (C) T.Sang Tran aka "n3rd0x" <nerdox.tranit@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,8 +17,8 @@
  */
 
 
-#ifndef _Controller_h_
-#define _Controller_h_
+#ifndef ndxController_h
+#define ndxController_h
 
 
 // Local includes
@@ -27,28 +27,28 @@
 
 namespace ndx {
 
- 
+
 /**
  * Controller widget.
  */
 class Controller : public QWidget, public Ui::Controller {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	// ************************************************************
-	// Member Declarations
-	// ************************************************************
+    // ************************************************************
+    // Member Declarations
+    // ************************************************************
     /**
      * Default constructor.
      * @param parent Parent widget.
      */
-	Controller(QWidget* parent = nullptr);
-    
-	
-	/**
-	 * Default destructor.
-	 */
-	~Controller();
+    Controller(QWidget* parent = nullptr);
+
+
+    /**
+     * Default destructor.
+     */
+    ~Controller();
 
 
     /**
@@ -108,10 +108,10 @@ protected:
 
 
 
-}; // End class Controller
+};  // End class Controller
 
 
-} // End namespace ndx
+}  // End namespace ndx
 
 
-#endif // _Controller_h_
+#endif  // ndxController_h

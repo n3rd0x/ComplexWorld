@@ -1,6 +1,6 @@
 /**
  * Complex World - Research & Educational Project
- * Copyright (C) T.Sang Tran aka "Nerdox" <t.sang.tran@outlook.com>
+ * Copyright (C) T.Sang Tran aka "n3rd0x" <nerdox.tranit@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,8 +17,8 @@
  */
 
 
-#ifndef _PluginMetaData_h_
-#define _PluginMetaData_h_
+#ifndef ndxPluginMetaData_h
+#define ndxPluginMetaData_h
 
 
 // Qt includes
@@ -81,4 +81,4 @@ public:
 }  // End namespace ndx
 
 
-#endif  // _PluginMetaData_h_
+#endif  // ndxPluginMetaData_h

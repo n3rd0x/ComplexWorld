@@ -1,6 +1,6 @@
 /**
  * Complex World - Research & Educational Project
- * Copyright (C) T.Sang Tran aka "Nerdox" <t.sang.tran@outlook.com>
+ * Copyright (C) T.Sang Tran aka "n3rd0x" <nerdox.tranit@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -28,6 +28,7 @@
 #include <QMessageBox>
 
 // STL includes
+#include <cmath>
 #include <sstream>
 
 
@@ -105,12 +106,13 @@ void KalmanFilter::generateMeaValues() {
     }
 
     // Set chart range and group title.
-    mChartView->setRange(mGlobalRangeLow, mGlobalRangeHigh, mGlobalSize);
+    mChartView->setRange(mGlobalRangeLow, mGlobalRangeHigh, static_cast<qint32>(mGlobalSize));
     mChartView->showMeasurement(mShowMea->isChecked());
 }
 
 
 void KalmanFilter::itemDoubleClicked(QListWidgetItem* item) {
+    Q_UNUSED(item)
     if(mDataList.count() <= 1) {
         return;
     }
@@ -137,29 +139,33 @@ void KalmanFilter::itemDoubleClicked(QListWidgetItem* item) {
     LOG_INFO_LEVEL_PREFIX("vEstP: " + std::to_string(data.vEstP), TAG);
     LOG_INFO_LEVEL_PREFIX("Kalman Gain: KG = eEst / (eEst + eMea)", TAG);
     LOG_INFO_LEVEL_PREFIX(
-        std::to_string(KG) + " = " + std::to_string(data.eEstP) + " / (" + std::to_string(data.eEstP) + " + "
-            + std::to_string(data.eMea) + ")",
+        std::to_string(KG) + " = " + std::to_string(data.eEstP) + " / (" + std::to_string(data.eEstP) + " + " +
+            std::to_string(data.eMea) + ")",
         TAG);
     LOG_INFO_LEVEL_PREFIX("Estimate: vEst = vEstP + (KG * (vMea - vEstP))", TAG);
     LOG_INFO_LEVEL_PREFIX(
-        std::to_string(vEst) + " = " + std::to_string(data.vEstP) + " + (" + std::to_string(KG) + " * ("
-            + std::to_string(data.vMea) + " - " + std::to_string(data.vEstP) + "))",
+        std::to_string(vEst) + " = " + std::to_string(data.vEstP) + " + (" + std::to_string(KG) + " * (" +
+            std::to_string(data.vMea) + " - " + std::to_string(data.vEstP) + "))",
         TAG);
     LOG_INFO_LEVEL_PREFIX("Error Estimate: eEst = (1 - KG) * eEstP", TAG);
     LOG_INFO_LEVEL_PREFIX(
-        std::to_string(eEst) + " = (1 - " + std::to_string(KG) + ") * " + std::to_string(data.eEstP), TAG);
+        std::to_string(eEst) + " = (1 - " + std::to_string(KG) + ") * " + std::to_string(data.eEstP),
+        TAG);
 
 
     // Verify, it should be the same.
-    if(KG != data.KG) {
+    auto diff = std::abs(KG - data.KG);
+    if(diff > 0.01) {
         LOG_CRITICAL_LEVEL_PREFIX("ERROR: Mismatch kalman gain.", TAG);
         LOG_CRITICAL_LEVEL_PREFIX("Calc: " + std::to_string(KG) + " Data: " + std::to_string(data.KG), TAG);
     }
-    if(vEst != data.vEst) {
+    diff = std::abs(vEst - data.vEst);
+    if(diff > 0.01) {
         LOG_CRITICAL_LEVEL_PREFIX("ERROR: Mismatch estimate value.", TAG);
         LOG_CRITICAL_LEVEL_PREFIX("Calc: " + std::to_string(vEst) + " Data: " + std::to_string(data.vEst), TAG);
     }
-    if(eEst != data.eEst) {
+    diff = std::abs(eEst - data.eEst);
+    if(diff > 0.01) {
         LOG_CRITICAL_LEVEL_PREFIX("ERROR: Mismatch error estimate value.", TAG);
         LOG_CRITICAL_LEVEL_PREFIX("Calc: " + std::to_string(eEst) + " Data: " + std::to_string(data.eEst), TAG);
     }
@@ -262,6 +268,7 @@ void KalmanFilter::restartCalculation() {
 
 
 void KalmanFilter::tabChanged(int idx) {
+    Q_UNUSED(idx)
 }
 
 

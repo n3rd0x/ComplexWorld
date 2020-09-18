@@ -1,0 +1,6 @@
+{
+    "Name"        : "MiniMax",
+    "Category"    : "Algorithms & Data Structures",
+    "Description" : "MiniMax algorithm.",
+    "Version"     : "1.0.0"
+}

@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>420</width>
-    <height>530</height>
+    <height>572</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -42,12 +42,12 @@
          <item>
           <widget class="QLabel" name="label_2">
            <property name="text">
-            <string>Player (A):</string>
+            <string>Player (X):</string>
            </property>
           </widget>
          </item>
          <item>
-          <widget class="QSpinBox" name="mScoreA">
+          <widget class="QSpinBox" name="mScoreX">
            <property name="minimumSize">
             <size>
              <width>50</width>
@@ -59,12 +59,12 @@
          <item>
           <widget class="QLabel" name="label_3">
            <property name="text">
-            <string>Player (B):</string>
+            <string>Player (O):</string>
            </property>
           </widget>
          </item>
          <item>
-          <widget class="QSpinBox" name="mScoreB">
+          <widget class="QSpinBox" name="mScoreO">
            <property name="minimumSize">
             <size>
              <width>50</width>
@@ -108,6 +108,19 @@
          </property>
          <property name="alignment">
           <set>Qt::AlignCenter</set>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="1">
+        <widget class="QPushButton" name="mBtnGameMiniMax">
+         <property name="minimumSize">
+          <size>
+           <width>0</width>
+           <height>40</height>
+          </size>
+         </property>
+         <property name="text">
+          <string>MiniMax</string>
          </property>
         </widget>
        </item>

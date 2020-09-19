@@ -62,6 +62,12 @@ public:
 
 
     /**
+     * @brief Run MiniMAx.
+     */
+    void runMiniMax();
+
+
+    /**
      * Shutdown the scene.
      */
     void shutDown();
@@ -107,13 +113,30 @@ protected:
 
 
     /**
+     * @return Current state.
+     */
+    Cell::State currentState() const;
+
+
+    /**
+     * @brief Draw current board state.
+     */
+    void drawBoardState();
+
+
+
+    QPair<qint32, qint32> minimax(const Cell::State state, const qint32 depth = 0);
+
+
+    /**
      * @brief References.
      */
     QList<Cell*> mCells;
     qint32 mCellMarked;
     Cell* mCellMarking;
+    bool mDebug;
     bool mGameOver;
-    bool mPlayerA;
+    bool mPlayerX;
     QScopedPointer<QGraphicsScene> mScene;
 
 

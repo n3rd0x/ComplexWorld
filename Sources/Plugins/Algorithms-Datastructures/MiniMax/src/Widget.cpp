@@ -56,6 +56,11 @@ void Widget::clear() {
 }
 
 
+void Widget::gameMiniMax() {
+    mGameView->runMiniMax();
+}
+
+
 void Widget::gameNewRound() {
     mGameView->newRound();
     mGameStatus->setText("GAME IN PROCESS!");
@@ -63,19 +68,19 @@ void Widget::gameNewRound() {
 
 
 void Widget::gameReset() {
-    mScoreA->setValue(0);
-    mScoreB->setValue(0);
+    mScoreX->setValue(0);
+    mScoreO->setValue(0);
     mGameStatus->setText("CLICK ON NEW ROUND TO BEGIN!");
 }
 
 
 void Widget::gameWinner(qint32 winner) {
     if(winner == 1) {
-        mScoreA->setValue(mScoreA->value() + 1);
+        mScoreX->setValue(mScoreX->value() + 1);
         mGameStatus->setText("X WINS!");
     }
     else if(winner == 2) {
-        mScoreB->setValue(mScoreB->value() + 1);
+        mScoreO->setValue(mScoreO->value() + 1);
         mGameStatus->setText("O WINS!");
     }
     else {
@@ -89,12 +94,12 @@ void Widget::generateDepth(const qint32 depth, Cell* parent) {
     auto children = QRandomGenerator::global()->bounded(2, 4);
     auto width    = children * 30;
     for(auto c = 0; c < children; c++) {
-        auto item = new Cell("", Cell::State::O, parent);
+        auto item = new Cell(-1, Cell::State::O, parent);
 
 
         // Assign final value in the last depth.
         if(depth == mDepth->value() - 1) {
-            item->setMiniMaxValue(QRandomGenerator::global()->generate());
+            item->setMiniMax(QRandomGenerator::global()->generate());
         }
         else {
             generateDepth(depth + 1, item);
@@ -145,6 +150,7 @@ bool Widget::startUp(QWidget* parent) {
     connect(mViewController->mButtonForward, &QPushButton::clicked, this, &Widget::proceedCalcualtion);
     connect(mViewController->mTimer, &QTimer::timeout, this, &Widget::proceedCalcualtion);
     connect(mBtnGenerate, &QPushButton::clicked, this, &Widget::generateValues);
+    connect(mBtnGameMiniMax, &QPushButton::clicked, this, &Widget::gameMiniMax);
     connect(mBtnGameReset, &QPushButton::clicked, this, &Widget::gameReset);
     connect(mBtnGameNewRound, &QPushButton::clicked, this, &Widget::gameNewRound);
     connect(mGameView, &GameView::sWinner, this, &Widget::gameWinner);

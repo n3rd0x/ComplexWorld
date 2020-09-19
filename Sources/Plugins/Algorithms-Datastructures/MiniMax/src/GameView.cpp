@@ -25,6 +25,7 @@
 
 // Qt includes
 #include <QPainter>
+#include <QRandomGenerator>
 
 
 namespace ndx {
@@ -44,8 +45,9 @@ const std::string GameView::TAG = "GameView";
 GameView::GameView(QWidget* parent) : QGraphicsView(parent) {
     mCellMarking = nullptr;
     mCellMarked  = 0;
+    mDebug       = false;
     mGameOver    = true;
-    mPlayerA     = true;
+    mPlayerX     = true;
     this->setMouseTracking(true);
 }
 
@@ -64,11 +66,6 @@ qint32 GameView::checkWinner() {
         }
         return -1;
     };
-
-
-    if(mCellMarked >= 9) {
-        return 0;
-    }
 
 
     // Horizontal.
@@ -112,7 +109,173 @@ qint32 GameView::checkWinner() {
         }
     }
 
+    if(mCellMarked >= 9) {
+        return 0;
+    }
     return -1;
+}
+
+
+Cell::State GameView::currentState() const {
+    if(mPlayerX) {
+        return Cell::State::X;
+    }
+    return Cell::State::O;
+}
+
+
+void GameView::drawBoardState() {
+    LOG_DEBUG_LEVEL_PREFIX("Board Layout:", TAG);
+    auto is = 0;
+    auto ii = 0;
+    for(auto i = 0; i < 3; i++) {
+        std::string str = "";
+
+        // Print states.
+        for(auto j = 0; j < 3; j++) {
+            str += mCells.at(is++)->layout() + " ";
+        }
+
+        // Print indices.
+        for(auto j = 0; j < 3; j++) {
+            str += std::to_string(mCells.at(ii++)->id()) + " ";
+        }
+        LOG_DEBUG_LEVEL_PREFIX(str, TAG);
+    }
+}
+
+
+QPair<qint32, qint32> GameView::minimax(const Cell::State state, const qint32 depth) {
+    if(mDebug) {
+        drawBoardState();
+    }
+
+    // Check winner conditions.
+    auto res = checkWinner();
+    if(res == 1) {
+        if(mDebug) {
+            LOG_DEBUG_LEVEL_PREFIX("Winner X (+1)", TAG);
+        }
+        return QPair<qint32, qint32>(0, 1);
+    }
+    else if(res == 2) {
+        if(mDebug) {
+            LOG_DEBUG_LEVEL_PREFIX("Winner O (+1)", TAG);
+        }
+        return QPair<qint32, qint32>(0, -1);
+    }
+    else if(res == 0) {
+        if(mDebug) {
+            LOG_DEBUG_LEVEL_PREFIX("Draw (0)", TAG);
+        }
+        return QPair<qint32, qint32>(0, 0);
+    }
+
+    if(mDebug) {
+        LOG_DEBUG_LEVEL_PREFIX("Next State (" + Cell::parseState(state) + ")", TAG);
+    }
+
+    QList<QPair<qint32, qint32>> list;
+    for(auto itr: mCells) {
+        if(!itr->isOccupied()) {
+            if(mDebug) {
+                LOG_DEBUG_LEVEL_PREFIX(
+                    "[" + Cell::parseState(state) + "] Processing next moves....(" + std::to_string(itr->id()) + ")",
+                    TAG);
+            }
+            itr->setState(state);
+            itr->setOccupied(true);
+            itr->setMiniMaxEnabled(true);
+            mCellMarked++;
+
+            QPair<qint32, qint32> score;
+            if(state == Cell::State::X) {
+                score = minimax(Cell::State::O);
+            }
+            else {
+                score = minimax(Cell::State::X);
+            }
+            list.push_back(QPair<qint32, qint32>(itr->id(), score.second));
+            itr->setState(Cell::State::NONE);
+            itr->setOccupied(false);
+            mCellMarked--;
+        }
+    }
+
+    QList<QPair<qint32, qint32>> bestWins;
+    QList<QPair<qint32, qint32>> bestDraws;
+    for(auto itr: list) {
+        if(itr.second == 0) {
+            bestDraws.push_back(itr);
+        }
+        if(state == Cell::State::X && itr.second == 1) {
+            bestWins.push_back(itr);
+        }
+        if(state == Cell::State::O && itr.second == -1) {
+            bestWins.push_back(itr);
+        }
+
+        if(depth == 0) {
+            auto item = mCells.at(itr.first);
+            item->setMiniMax(itr.second);
+            if((state == Cell::State::O && itr.second == 1) || (state == Cell::State::X && itr.second == -1)) {
+                item->setMiniMax(-1);
+            }
+            if((state == Cell::State::O && itr.second == -1)) {
+                item->setMiniMax(1);
+            }
+            mScene->update(item->posRect());
+        }
+    }
+
+    if(!bestWins.isEmpty()) {
+        auto idx  = QRandomGenerator::global()->bounded(0, bestWins.size());
+        auto item = bestWins.at(idx);
+
+        if(mDebug) {
+            LOG_DEBUG_LEVEL_PREFIX(
+                "[" + Cell::parseState(state) + "] Best win move (" + std::to_string(item.first) + ")",
+                TAG);
+        }
+        return item;
+        // return bestWins.first();
+    }
+    if(!bestDraws.isEmpty()) {
+        auto idx  = QRandomGenerator::global()->bounded(0, bestDraws.size());
+        auto item = bestDraws.at(idx);
+
+        if(mDebug) {
+            LOG_DEBUG_LEVEL_PREFIX(
+                "[" + Cell::parseState(state) + "] Best draw move (" + std::to_string(item.first) + ")",
+                TAG);
+        }
+        return item;
+        // return bestDraws.first();
+    }
+
+
+    // When it comes to this point, it doesn't matter which one to choose.
+    // The current player will loose either way, in the mindset that the other
+    // will play their best move.
+    // So we return 0 for the best change to make a draw.
+    if(mDebug) {
+        LOG_DEBUG_LEVEL_PREFIX("----------------------------------------", TAG);
+        LOG_DEBUG_LEVEL_PREFIX("[" + Cell::parseState(state) + "] Random move.", TAG);
+        drawBoardState();
+        for(auto itr: list) {
+            LOG_DEBUG_LEVEL_PREFIX(
+                "[" + Cell::parseState(state) + "] " + std::to_string(itr.first) + "::" + std::to_string(itr.second),
+                TAG);
+        }
+        LOG_DEBUG_LEVEL_PREFIX("----------------------------------------", TAG);
+    }
+
+    auto idx  = QRandomGenerator::global()->bounded(0, list.size());
+    auto item = list.at(idx);
+
+    // return list.first();
+    // return QPair<qint32, qint32>(0, 0);
+    return QPair<qint32, qint32>(item.first, 0);
 }
 
 
@@ -125,11 +288,16 @@ void GameView::mouseDoubleClickEvent(QMouseEvent* evt) {
     if(item && !item->isOccupied()) {
         mCellMarking = nullptr;
 
-        mPlayerA ? item->setState(Cell::State::X) : item->setState(Cell::State::O);
+        auto state = mPlayerX ? Cell::State::X : Cell::State::O;
+        item->setState(state);
+        item->setMiniMax(0);
+        item->setMiniMaxEnabled(false);
+        item->setMarking(false);
+        item->setOccupied(true);
 
         mScene->update(item->posRect());
         mCellMarked++;
-        mPlayerA = !mPlayerA;
+        mPlayerX = !mPlayerX;
 
         auto res = checkWinner();
         if(res >= 0) {
@@ -148,6 +316,7 @@ void GameView::mouseMoveEvent(QMouseEvent* evt) {
     auto processLastItem = [&]() {
         if(mCellMarking) {
             mCellMarking->setState(Cell::State::NONE);
+            mCellMarking->setMarking(false);
             mScene->update(mCellMarking->posRect());
             mCellMarking = nullptr;
         }
@@ -156,7 +325,9 @@ void GameView::mouseMoveEvent(QMouseEvent* evt) {
 
     auto item = static_cast<Cell*>(mScene->itemAt(mapToScene(evt->pos()), QTransform()));
     if(item && !item->isOccupied()) {
-        item->setState(Cell::State::MARKED);
+        item->setState(currentState());
+        item->setMarking(true);
+
         if(item != mCellMarking) {
             processLastItem();
 
@@ -174,9 +345,17 @@ void GameView::newRound() {
     mCellMarked = 0;
     mGameOver   = false;
     for(auto itr: mCells) {
-        itr->setState(Cell::State::NONE);
-        mScene->update(itr->posRect());
+        auto item = static_cast<Cell*>(itr);
+        item->reset();
+        mScene->update(item->posRect());
     }
+}
+
+
+void GameView::runMiniMax() {
+    auto state = currentState();
+    auto move  = minimax(state);
+    LOG_DEBUG_LEVEL_PREFIX("Best move: " + std::to_string(move.first), TAG);
 }
 
 
@@ -191,10 +370,10 @@ bool GameView::startUp() {
     this->setScene(mScene.data());
 
     // Setup the board.
+    auto id = 0;
     for(auto i = 0; i < 3; i++) {
         for(auto j = 0; j < 3; j++) {
-            auto name = QString::number(j) + ", " + QString::number(i);
-            auto cell = new Cell(name);
+            auto cell = new Cell(id++);
             cell->setPos(Cell::SIZE * j, Cell::SIZE * i);
 
             mScene->addItem(cell);

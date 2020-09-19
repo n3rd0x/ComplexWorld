@@ -123,6 +123,12 @@ protected slots:
 
 
     /**
+     * @brief Run MiniMax.
+     */
+    void gameMiniMax();
+
+
+    /**
      * @brief New round.
      */
     void gameNewRound();

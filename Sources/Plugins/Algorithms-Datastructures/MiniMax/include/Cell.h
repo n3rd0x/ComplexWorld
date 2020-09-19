@@ -36,7 +36,7 @@ public:
     // ************************************************************
     // Enumerator Declarations
     // ************************************************************
-    enum class State : qint32 { NONE, X, O, MARKED };
+    enum class State : qint32 { NONE, X, O };
 
 
 
@@ -46,7 +46,7 @@ public:
     /**
      * Default constructor.
      */
-    Cell(const QString& name = "", const State state = State::NONE, QGraphicsItem* parent = nullptr);
+    Cell(const qint32 id = -1, const State state = State::NONE, QGraphicsItem* parent = nullptr);
 
 
     /**
@@ -69,6 +69,24 @@ public:
 
 
     /**
+     * @return ID of this cell.
+     */
+    qint32 id() const;
+
+
+    /**
+     * @return Layout of current state.
+     */
+    std::string layout() const;
+
+
+    /**
+     * @return MiniMax value.
+     */
+    qint32 minimax() const;
+
+
+    /**
      * @return Name of this cell.
      */
     QString name() const;
@@ -82,10 +100,37 @@ public:
 
 
     /**
+     * @brief Reset.
+     */
+    void reset();
+
+
+    /**
      * @brief Set the MiniMax value.
      * @param value MiniMax value.
      */
-    void setMiniMaxValue(const qint32 value);
+    void setMiniMax(const qint32 value);
+
+
+    /**
+     * @brief Enable display MiniMax value.
+     * @param value State value.
+     */
+    void setMiniMaxEnabled(const bool value);
+
+
+    /**
+     * @brief Set marking state.
+     * @param state The marking state.
+     */
+    void setMarking(const bool state);
+
+
+    /**
+     * @brief Set occupied state.
+     * @param state The occupied state.
+     */
+    void setOccupied(const bool state);
 
 
     /**
@@ -128,6 +173,14 @@ public:
     static const qint32 SIZE;
 
 
+    /**
+     * @brief Parse the state.
+     * @param state State to parse.
+     * @return String presentation.
+     */
+    static std::string parseState(Cell::State state);
+
+
 protected:
     // ************************************************************
     // Member Declarations
@@ -135,8 +188,11 @@ protected:
     /**
      * @brief References.
      */
-    QString mName;
+    qint32 mID;
+    bool mMarking;
     qint32 mMiniMax;
+    bool mMiniMaxEnabled;
+    bool mOccupied;
     State mState;
 
 

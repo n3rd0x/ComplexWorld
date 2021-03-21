@@ -48,6 +48,7 @@ GameView::GameView(QWidget* parent) : QGraphicsView(parent) {
     mDebug       = false;
     mGameOver    = true;
     mPlayerX     = true;
+    mSize        = 3;
     this->setMouseTracking(true);
 }
 
@@ -69,47 +70,90 @@ qint32 GameView::checkWinner() {
 
 
     // Horizontal.
-    for(auto i = 0; i < 9; i += 3) {
-        auto itemA = mCells.at(i);
-        auto itemB = mCells.at(i + 1);
-        auto itemC = mCells.at(i + 2);
-        if(itemA->isEquals(itemB) && itemB->isEquals(itemC)) {
-            return checkPlayer(itemA);
+    for(auto i = 0; i < mSize * mSize; i += mSize) {
+        bool winner = true;
+        for(auto j = 0; j < mSize - 1; j++) {
+            if(!mCells.at(i + j)->isEquals(mCells.at(i + j + 1))) {
+                winner = false;
+                break;
+            }
         }
+        if(winner) {
+            return checkPlayer(mCells.at(i));
+        }
+
+        //        auto itemA = mCells.at(i);
+        //        auto itemB = mCells.at(i + 1);
+        //        auto itemC = mCells.at(i + 2);
+        //        if(itemA->isEquals(itemB) && itemB->isEquals(itemC)) {
+        //            return checkPlayer(itemA);
+        //        }
     }
 
 
     // Vertical.
-    for(auto i = 0; i < 3; i++) {
-        auto itemA = mCells.at(i);
-        auto itemB = mCells.at(i + 3);
-        auto itemC = mCells.at(i + 6);
-        if(itemA->isEquals(itemB) && itemB->isEquals(itemC)) {
-            return checkPlayer(itemA);
+    for(auto i = 0; i < mSize; i++) {
+        bool winner = true;
+        for(auto j = 0; j < (mSize * mSize) - mSize; j = j + mSize) {
+            if(!mCells.at(i + j)->isEquals(mCells.at(i + j + mSize))) {
+                winner = false;
+                break;
+            }
         }
+        if(winner) {
+            return checkPlayer(mCells.at(i));
+        }
+
+        //        auto itemA = mCells.at(i);
+        //        auto itemB = mCells.at(i + 3);
+        //        auto itemC = mCells.at(i + 6);
+        //        if(itemA->isEquals(itemB) && itemB->isEquals(itemC)) {
+        //            return checkPlayer(itemA);
+        //        }
     }
 
 
     // Diagonal.
     {
-        auto itemA = mCells.at(0);
-        auto itemB = mCells.at(4);
-        auto itemC = mCells.at(8);
-        if(itemA->isEquals(itemB) && itemB->isEquals(itemC)) {
-            return checkPlayer(itemA);
+        bool winner = true;
+        for(auto i = 0; i < (mSize * mSize) - 1; i = i + mSize + 1) {
+            if(!mCells.at(i)->isEquals(mCells.at(i + mSize + 1))) {
+                winner = false;
+                break;
+            }
         }
+        if(winner) {
+            return checkPlayer(mCells.at(0));
+        }
+        //                auto itemA = mCells.at(0);
+        //                auto itemB = mCells.at(4);
+        //                auto itemC = mCells.at(8);
+        //                if(itemA->isEquals(itemB) && itemB->isEquals(itemC)) {
+        //                    return checkPlayer(itemA);
+        //                }
     }
 
     {
-        auto itemA = mCells.at(2);
-        auto itemB = mCells.at(4);
-        auto itemC = mCells.at(6);
-        if(itemA->isEquals(itemB) && itemB->isEquals(itemC)) {
-            return checkPlayer(itemA);
+        // TODO!
+        bool winner = true;
+        for(auto i = mSize - 1; i < (mSize * mSize) - 1; i = i + mSize - 1) {
+            if(!mCells.at(i)->isEquals(mCells.at(i + mSize) + 1)) {
+                winner = false;
+                break;
+            }
         }
+        if(winner) {
+            return checkPlayer(mCells.at(mSize - 1));
+        }
+        //        auto itemA = mCells.at(2);
+        //        auto itemB = mCells.at(4);
+        //        auto itemC = mCells.at(6);
+        //        if(itemA->isEquals(itemB) && itemB->isEquals(itemC)) {
+        //            return checkPlayer(itemA);
+        //        }
     }
 
-    if(mCellMarked >= 9) {
+    if(mCellMarked >= mSize * mSize) {
         return 0;
     }
     return -1;
@@ -128,16 +172,16 @@ void GameView::drawBoardState() {
     LOG_DEBUG_LEVEL_PREFIX("Board Layout:", TAG);
     auto is = 0;
     auto ii = 0;
-    for(auto i = 0; i < 3; i++) {
+    for(auto i = 0; i < mSize; i++) {
         std::string str = "";
 
         // Print states.
-        for(auto j = 0; j < 3; j++) {
+        for(auto j = 0; j < mSize; j++) {
             str += mCells.at(is++)->layout() + " ";
         }
 
         // Print indices.
-        for(auto j = 0; j < 3; j++) {
+        for(auto j = 0; j < mSize; j++) {
             str += std::to_string(mCells.at(ii++)->id()) + " ";
         }
         LOG_DEBUG_LEVEL_PREFIX(str, TAG);
@@ -371,8 +415,8 @@ bool GameView::startUp() {
 
     // Setup the board.
     auto id = 0;
-    for(auto i = 0; i < 3; i++) {
-        for(auto j = 0; j < 3; j++) {
+    for(auto i = 0; i < mSize; i++) {
+        for(auto j = 0; j < mSize; j++) {
             auto cell = new Cell(id++);
             cell->setPos(Cell::SIZE * j, Cell::SIZE * i);
 

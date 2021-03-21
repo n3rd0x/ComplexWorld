@@ -137,6 +137,7 @@ protected:
     bool mDebug;
     bool mGameOver;
     bool mPlayerX;
+    qint32 mSize;
     QScopedPointer<QGraphicsScene> mScene;
 
 

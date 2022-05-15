@@ -17,10 +17,12 @@
 # ************************************************************
 
 
-add_subdirectory("Library")
-if(QT_FOUND)
-    if(Build_Module_ComplexApplication_STATE)
-        add_subdirectory("Complex-Application")
+if(POCO_FOUND)
+    add_subdirectory("Library")
+    if(QT_FOUND)
+        if(Build_Module_ComplexApplication_STATE)
+            add_subdirectory("Complex-Application")
+        endif()
     endif()
 endif()
-
+add_subdirectory("Samples")

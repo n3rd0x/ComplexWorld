@@ -18,7 +18,7 @@
 
 
 if(Build_Module_ComplexApplication_STATE)
-    if(QT_FOUND)
+    if(QT_FOUND AND POCO_FOUND)
         add_subdirectory("Algorithms-Datastructures")
         add_subdirectory("Complex-Application")
         

@@ -17,6 +17,5 @@
 # ************************************************************
 
 
-add_subdirectory("Modules")
-add_subdirectory("Plugins")
+add_subdirectory("Constructors")
 

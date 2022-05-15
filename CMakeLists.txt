@@ -65,14 +65,17 @@ set(PROJECT_PATH_THIRD_PARTY "${PROJECT_PATH_ROOT}/Third-Parties")
 include("CommonComplexApplicationFiles")
 include("CommonProgrammingGameAIFiles")
 include("CommonFiles")
+include(IncludeLoguru)
 
 # Project selections.
 option(Build_AllBuilds "Enable all modules." OFF)
-option(Build_Module_ComplexApplication "Enable Conplex Application module." OFF)
+option(Build_Module_ComplexApplication "Enable the Complex Application module." OFF)
+option(Build_Module_SampleCpp "Enable the Sample of C++ module." OFF)
 
 # Toggle project selections.
 set(Modules
     Build_Module_ComplexApplication
+    Build_Module_SampleCpp
 )
 toggle_enabling_state(Build_AllBuilds "${Modules}")
 
@@ -152,4 +155,12 @@ endif()
 # ************************************************************
 message(STATUS "")
 message(STATUS "Sub Projects:")
-add_subdirectory("Sources")
+if(BUILD_SOURCE)
+    add_subdirectory("Sources")
+else()
+    message("Run CMake again to processing sub projects.")
+endif()
+
+
+# Check point.
+set(BUILD_SOURCE TRUE CACHE INTERNAL "Start parsing source directory.")

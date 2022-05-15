@@ -17,6 +17,7 @@
 # ************************************************************
 
 
-add_subdirectory("Modules")
-add_subdirectory("Plugins")
+if(Build_Module_SampleCpp)
+    add_subdirectory("Cpp")
+endif()
 

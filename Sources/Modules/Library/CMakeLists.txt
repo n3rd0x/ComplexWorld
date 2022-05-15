@@ -22,7 +22,7 @@
 # ************************************************************
 # Project Details
 # ************************************************************
-initialise_local_project("Library" "ndxLib library.")
+cm_initialise_local_project("Library" "ndxLib library." Languages CXX)
 
 
 
@@ -31,8 +31,7 @@ initialise_local_project("Library" "ndxLib library.")
 # ************************************************************
 # Configurations
 # ************************************************************
-# Local paths.
-initialise_local_variable()
+cm_initialise_local_variable()
 add_definitions(-DNDXLIB_NONCLIENT_BUILD)
 
 
@@ -118,5 +117,5 @@ set_target_properties(
 )
 
 # Copy project templates.
-copy_project_template()
+cm_copy_project_template()
 

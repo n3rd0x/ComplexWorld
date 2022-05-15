@@ -33,15 +33,24 @@ set(CMAKE_MODULE_PATH
     "${CMAKE_CURRENT_SOURCE_DIR}/Sources/CMake"
     "${PROJECT_PATH_CMAKE_PUBLIC}"
     "${PROJECT_PATH_CMAKE_PUBLIC}/Packages"
+    "${PROJECT_PATH_CMAKE_PUBLIC}/Third-Parties/Ogre"
     "${PROJECT_PATH_CMAKE_PUBLIC}/Utilities"
+    "${PROJECT_PATH_CMAKE_PUBLIC}/Utilities/BuildUtils"
 )
 
-# Include necessary modules. 
+# Include necessary modules.
+include(CheckCCompilerFlag)
 include(CheckCXXCompilerFlag)
 include(CMakeParseArguments)
+include(ProcessorCount)
+
+# Custom modules.
 include(DebugUtils)
 include(BuildUtils)
-include(OgreUtils)
+include(BuildUtils_Compiler)
+include(BuildUtils_Project)
 include(PackageUtils)
+include(OgreUtils)
+include(PreprocessorUtils)
 include(QtUtils)
 

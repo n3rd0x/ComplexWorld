@@ -23,7 +23,7 @@
 # CMake Configurations
 # ************************************************************
 # Set minimum version requirement of CMake.
-cmake_minimum_required(VERSION 2.8)
+cmake_minimum_required(VERSION 3.8)
 
 # CMake build system.
 include("${CMAKE_CURRENT_SOURCE_DIR}/BuildSystem.cmake")
@@ -35,13 +35,7 @@ include("${CMAKE_CURRENT_SOURCE_DIR}/BuildSystem.cmake")
 # ************************************************************
 # Project Details
 # ************************************************************
-initialise_project(
-    "ComplextWorld"
-    Description "Research and educational project."
-    Major 0
-    Minor 0
-    Patch 3
-)
+project("ComplexWorld" DESCRIPTION "Research and educational project." VERSION 0.0.1.0 LANGUAGES CXX)
 
 
 
@@ -49,17 +43,23 @@ initialise_project(
 # ************************************************************
 # Configurations
 # ************************************************************
-# Initialize global variables.
-initialise_project_environment()
+# Compiler details.
+cm_user_compiler_cxx_standard(17)
+
+# Initialise CMake system.
+cm_initialise_cmake_system()
+
+# Initialise project SDK.
 initialise_project_sdk()
 
-# Initialize default project paths.
-initialise_project_path()
-initialise_project_compiler_flags()
+# Add propterty definitions.
+cm_add_definition(VERSION="${PROJECT_VERSION}")
+cm_add_definition(RELEASE="${PROJECT_BUILD_TIME}")
 
 # Initialize other paths
 set(PROJECT_PATH_SOURCE "${PROJECT_PATH_ROOT}/Sources")
-set(PROJECT_PATH_DATA   "${PROJECT_PATH_ROOT}/Data")
+set(PROJECT_PATH_DATA "${PROJECT_PATH_ROOT}/Data")
+set(PROJECT_PATH_THIRD_PARTY "${PROJECT_PATH_ROOT}/Third-Parties")
 
 # Include common files.
 include("CommonComplexApplicationFiles")
@@ -123,13 +123,13 @@ set(PROJECT_LIBRARIES
 )
 
 # Adding dependencies.
-package_copy_binary_from_target(OGRE)
-package_copy_binary_from_target(OGRE_Bites)
-package_copy_binary_from_target(OGRE_Overlay)
-package_copy_binary_from_target(POCO_FOUNDATION)
+cm_package_copy_binary_from_target(OGRE)
+cm_package_copy_binary_from_target(OGRE_Bites)
+cm_package_copy_binary_from_target(OGRE_Overlay)
+cm_package_copy_binary_from_target(POCO_FOUNDATION)
 
 if(SearchQt)
-    package_copy_binary_from_target(QT)
+    cm_package_copy_binary_from_target(QT)
     if(UNIX)
         qt_copy_configuration_file()
     endif()

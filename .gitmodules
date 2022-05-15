@@ -1,3 +1,3 @@
 [submodule "Sub-Repos/CMake-Public"]
 	path = Sub-Repos/CMake-Public
-	url = ssh://git@bitbucket.org/n3rd0x/cmake-public.git
+url=https://github.com/n3rd0x/CMake-Public.git

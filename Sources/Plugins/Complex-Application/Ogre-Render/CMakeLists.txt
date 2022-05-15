@@ -22,7 +22,7 @@
 # ************************************************************
 # Project Details
 # ************************************************************
-initialise_local_project("Plugin_ComplexApplication_OgreRender" "OGRE Render.")
+cm_initialise_local_project("Plugin_ComplexApplication_OgreRender" "OGRE Render.")
 
 
 
@@ -31,7 +31,7 @@ initialise_local_project("Plugin_ComplexApplication_OgreRender" "OGRE Render.")
 # Configurations
 # ************************************************************
 # Local paths.
-initialise_local_variable()
+cm_initialise_local_variable()
 set(LOCAL_PATH_RESOURCE "${CMAKE_CURRENT_SOURCE_DIR}/res")
 set(LOCAL_PATH_RESOURCE_UI "${LOCAL_PATH_RESOURCE}/ui")
 
@@ -170,7 +170,7 @@ set_target_properties(
 qt5_use_modules(${PROJECT_NAME} Core Gui Widgets)
 
 # Copy project templates.
-copy_project_template()
+cm_copy_project_template()
 
 # Copy the generated plug-in to the output directory.
 copy_build_file_to_output_directory(SubPath "/Plugins")
